@@ -180,7 +180,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 			else {
 				c1.setX(p.getX()-20);
-				c1.setY(p.getY()+8);
+				c1.setY(p.getY()+8); //useful comment
 			}
 		}
 		c1.paint(g);
