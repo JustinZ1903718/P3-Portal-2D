@@ -16,6 +16,7 @@ public class Wall{
 	private int topY;
 	private int bx;
 	private int by;
+	private boolean prePortal;
 	private boolean portal;
 	public Wall(int tox, int ty, int x, int y, boolean portal) {
 		topX=tox;
@@ -23,6 +24,7 @@ public class Wall{
 		bx=x;
 		by=y;
 		this.portal=portal;
+		prePortal = false;
 	}
 
 	public int getTopX() {
@@ -39,6 +41,12 @@ public class Wall{
 	}
 	public boolean getPortal() {
 		return portal;
+	}
+	public boolean getPrePortal() {
+		return prePortal;
+	}
+	public void setPrePortal(boolean prePortal) {
+		this.prePortal = prePortal;
 	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
