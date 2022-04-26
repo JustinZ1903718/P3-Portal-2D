@@ -1,5 +1,5 @@
 package Portal2D.src;
-//foidu
+//foid
 import java.awt.Color;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
