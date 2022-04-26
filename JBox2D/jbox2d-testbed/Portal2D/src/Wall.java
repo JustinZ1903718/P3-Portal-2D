@@ -18,13 +18,16 @@ public class Wall{
 	private int by;
 	private boolean prePortal;
 	private boolean portal;
-	public Wall(int tox, int ty, int x, int y, boolean portal) {
+	private boolean horizontal;
+	public Wall(int tox, int ty, int x, int y, boolean portal, boolean horizontal) {
 		topX=tox;
 		topY=ty;
 		bx=x;
 		by=y;
 		this.portal=portal;
 		prePortal = false;
+		this.horizontal = horizontal;
+
 	}
 
 	public int getTopX() {
@@ -38,6 +41,9 @@ public class Wall{
 	}
 	public int getBy() {
 		return this.by;
+	}
+	public boolean getHorizontal() {
+		return this.horizontal;
 	}
 	public boolean getPortal() {
 		return portal;

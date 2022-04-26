@@ -39,7 +39,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	private boolean justTele=false;
 
-	private int frameCount;
 
 	private boolean pickUp=false;
 
@@ -50,8 +49,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Cube c1=new Cube(700, 300);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
-		walls.add(new Wall(0, 400, 600, 500, false));
-		walls.add(new Wall(400, 350, 1000, 400, false));
+		walls.add(new Wall(0, 400, 600, 500, false, true));
+		walls.add(new Wall(400, 350, 1000, 400, false, true));
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
@@ -59,7 +58,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 
-		frameCount++;
 		super.paintComponent(g);
 		b.paint(g);
 
@@ -135,62 +133,51 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		for(Wall w: walls) {
 
+			
 			if(s.size()!=0) {
 				if(collision((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+					
 					if(!w.getPrePortal()) {
 						if(s.get(0).getOrange()) {
-							p1x = (int) s.get(0).getX();
-							p1y = (int) s.get(0).getY()-50;
+							if(w.getHorizontal()) {
+								p1.setHorizontal(true);
+								p1x = (int) s.get(0).getX()-20;
+								p1y = (int) w.getTopY()-10;
+							}
+							else {
+								p1.setHorizontal(false);
+								p1x = (int) s.get(0).getX()-20;
+								p1y = (int) s.get(0).getY()-18;
+							}
+							
 						}
 						else {
-							p2x = (int) s.get(0).getX();
-							p2y = (int) s.get(0).getY()-50;
+							if(w.getHorizontal()) {
+								p2.setHorizontal(true);
+							}
+							else {
+								p2.setHorizontal(false);
+							}
+							p2x = (int) s.get(0).getX()-20;
+							p2y = (int) w.getTopY()-5;
 						}
 					}
 					w.setPrePortal(true);
 				}
 				else {
-					w.setPrePortal(false);;
+					w.setPrePortal(false);
 					s.get(0).paint(g);
 				}
+				
+			}
+	
+			
 
-			}
 
-			if(!p1.getHorizontal()) {
-				if(p.getX()+20>p1x&&prevX+20<=p1x) {
-					if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-						p.setX(p2x);
-						p.setY(p2y);
-						justTele=true;
-						teleported=true;
-					}	
-				}
-				if(p.getX()<p1x&&prevX>=p1x) {
-					if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-						p.setX(p2x);
-						p.setY(p2y);
-						justTele=true;
-						teleported=true;
-					}	
-				}
-			}
-			else {
-
-			}
-			if(!p2.getHorizontal()) {
-				if(p.getX()+20>p2x&&prevX+20<=p2x) {
-					if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-						p.setX(p1x);
-						p.setY(p1y);
-						justTele=true;
-						teleported=true;
-					}	
-				}
-			}
+			
 
 
 			if(checkLeft(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the left
-				
 				p.setX(prevX);
 				wallLeft=true; movingLeft=false;
 				System.out.println("Left");
@@ -218,6 +205,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				System.out.println("Bottom");
 			}
 		}
+		
+
 		if(groundW!=null&&(p.getX()+40<groundW.getTopX()||p.getX()>groundW.getBx())) {
 			p.setGround(false);p.setVY(0);
 			System.out.println("joey");
@@ -230,44 +219,80 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		
 
-		if(p.getX()+40>p1x&&prevX+20<=p1x) {
-			if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-				p.setX(p2x);
-				p.setY(p2y);
-				justTele=true;
-				teleported=true;
-				p.setGround(false);p.setVY(0);
-			}	
+		if(!p1.getHorizontal()) {
+			if(p.getX()+20>p1x&&prevX+20<=p1x) {
+				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
+					p.setX(p2x);
+					p.setY(p2y);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()<p1x&&prevX>=p1x) {
+				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
+					p.setX(p2x);
+					p.setY(p2y);
+					justTele=true;
+					teleported=true;
+				}	
+			}
 		}
-		if(p.getX()<p1x&&prevX>=p1x) {
-			if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-				p.setX(p2x);
-				p.setY(p2y);
-				justTele=true;
-				teleported=true;
-				p.setGround(false);p.setVY(0);
-			}	
+		else {
+			if(p.getY()+50>p1y&&prevY+50<=p1y) {
+				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
+					p.setX(p2x);
+					p.setY(p2y-40);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()+50<p1y&&prevY+50>=p1y) {
+				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
+					p.setX(p2x);
+					p.setY(p2y-40);
+					justTele=true;
+					teleported=true;
+					System.out.println("joey");
+				}	
+			}
+		}
+		if(!p2.getHorizontal()) {
+			if(p.getX()+20>p2x&&prevX+20<=p2x) {
+				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()<p2x&&prevX>=p2x) {
+				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+		}
+		else {
+			if(p.getY()+50>p2y&&prevY+50<=p2y) {
+				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y-40);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()<p2y&&prevY>=p2y) {
+				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y-40);
+					justTele=true;
+					teleported=true;
+				}	
+			}
 		}
 
-		if(p.getX()+20>p2x&&prevX+20<=p2x) {
-			if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-				p.setX(p1x);
-				p.setY(p1y);
-				justTele=true;
-				teleported=true;
-				p.setGround(false);p.setVY(0);
-			}	
-		}
-		if(p.getX()<p2x&&prevX>=p2x) {
-			if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-				p.setX(p1x);
-				p.setY(p1y);
-				justTele=true;
-				teleported=true;
-				p.setGround(false);p.setVY(0);
-			}	
-		}
-		System.out.println(p.getVY());
 		if(justTele&&!teleported) {
 			justTele=false;
 		}
