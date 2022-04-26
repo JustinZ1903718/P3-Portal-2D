@@ -28,7 +28,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int p2y=9001;
 	private int prevX;
 	private int prevY;
-	private int xPressFrame=0;
 
 	private int groundY;
 	private Wall groundW=null;
