@@ -34,8 +34,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean wallRight=false;
 	private boolean wallLeft=false;
 	private boolean releaseInAir=false;
-	private boolean movingRight=false;
-	private boolean movingLeft=false;
+	private boolean holdLeft=false;
+	private boolean holdRight=false;
+	private boolean recentLeft=false;
 
 	private boolean justTele=false;
 
@@ -49,8 +50,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Cube c1=new Cube(700, 300);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
-		walls.add(new Wall(0, 400, 600, 500, false, true));
-		walls.add(new Wall(400, 350, 1000, 400, false, true));
+		walls.add(new Wall(0, 400, 1000, 500, false, true));
+		walls.add(new Wall(0, 200, 400, 400, false, true));
+		walls.add(new Wall(500, 200, 1000, 325, false, true));
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
@@ -105,17 +107,25 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 
 		boolean teleported=false;
-		
-		
+
+
 		if(p.getGround()) {
-			if(!movingRight&&!movingLeft) {
+			if(!holdLeft&&!holdRight) {
 				p.setVX(0);
 			}
-			if(movingRight&&!movingLeft) {
+			if(holdRight&&!holdLeft) {
 				p.setVX(5);
 			}
-			if(!movingRight&&movingLeft) {
+			if(!holdRight&&holdLeft) {
 				p.setVX(-5);
+			}
+			if(holdRight&&holdLeft) {
+				if(recentLeft) {
+					p.setVX(-5);
+				}
+				else {
+					p.setVX(5);
+				}
 			}
 		}
 		p.paint(g);
@@ -133,23 +143,23 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		for(Wall w: walls) {
 
-			
+
 			if(s.size()!=0) {
 				if(collision((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-					
+
 					if(!w.getPrePortal()) {
 						if(s.get(0).getOrange()) {
 							if(w.getHorizontal()) {
 								p1.setHorizontal(true);
 								p1x = (int) s.get(0).getX()-20;
-								p1y = (int) w.getTopY()-10;
+								p1y = (int) w.getTopY()-50;
 							}
 							else {
 								p1.setHorizontal(false);
 								p1x = (int) s.get(0).getX()-20;
-								p1y = (int) s.get(0).getY()-18;
+								p1y = (int) s.get(0).getY()-58;
 							}
-							
+
 						}
 						else {
 							if(w.getHorizontal()) {
@@ -159,7 +169,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 								p2.setHorizontal(false);
 							}
 							p2x = (int) s.get(0).getX()-20;
-							p2y = (int) w.getTopY()-5;
+							p2y = (int) w.getTopY()-50;
 						}
 					}
 					w.setPrePortal(true);
@@ -168,18 +178,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 					w.setPrePortal(false);
 					s.get(0).paint(g);
 				}
-				
+
 			}
-	
-			
 
 
-			
+
+
+
 
 
 			if(checkLeft(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the left
 				p.setX(prevX);
-				wallLeft=true; movingLeft=false;
+				wallLeft=true; holdLeft=false;holdRight=false;
 				System.out.println("Left");
 			}
 			else {wallRight=false;}
@@ -187,7 +197,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				p.setX(prevX);
 				wallRight=true;	
 				System.out.println("Right");
-				movingRight=false;
+				holdRight=false;holdLeft=false;
 
 			}
 			else {wallLeft=false;}
@@ -196,20 +206,21 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				System.out.println("Top");
 				if(releaseInAir) {
 					p.setVX(0);
+					releaseInAir=false;
 				}
 				groundY=w.getTopY()-40;
 				groundW=w;
+
 			}
 			if(checkBottom(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the bottom
-				p.setY(prevY);
+				p.setY(prevY);p.setVY((int) 0.5*p.getVY());
 				System.out.println("Bottom");
 			}
 		}
-		
+
 
 		if(groundW!=null&&(p.getX()+40<groundW.getTopX()||p.getX()>groundW.getBx())) {
 			p.setGround(false);p.setVY(0);
-			System.out.println("joey");
 			groundW=null;
 		}
 
@@ -217,7 +228,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(p.getGround()) {
 			p.setY(groundY);
 		}
-		
+
 
 		if(!p1.getHorizontal()) {
 			if(p.getX()+20>p1x&&prevX+20<=p1x) {
@@ -252,7 +263,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 					p.setY(p2y-40);
 					justTele=true;
 					teleported=true;
-					System.out.println("joey");
 				}	
 			}
 		}
@@ -312,20 +322,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 	}
 	public boolean collision(int tx, int ty, int bx, int by, Wall w) {
-		/*
-		if(checkTl(tx, ty, bx, by, w)) {
-			return true;
-		}
-		if(checkTr(tx, ty, bx, by, w)) {
-			return true;
-		}
-		if(checkBl(tx, ty, bx, by, w)) {
-			return true;
-		}
-		if(checkBr(tx, ty, bx, by, w)) {
-			return true;
-		}
-		*/
 		if(checkLeft(tx, ty, bx, by, w)) {
 			return true;
 		}
@@ -340,15 +336,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		return false;
 	}
-	public boolean checkLeft(int tx, int ty, int bx, int by, Wall w) {
+	public boolean checkRight(int tx, int ty, int bx, int by, Wall w) {
 		if(w.getTopY()<by&&w.getBy()>ty) {
-			if(bx-20>w.getTopX()&&bx<w.getTopX()+20) {
+			if(bx>=w.getTopX()&&bx<=w.getTopX()+20) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public boolean checkRight(int tx, int ty, int bx, int by, Wall w) {
+	public boolean checkLeft(int tx, int ty, int bx, int by, Wall w) {
 		if(w.getTopY()<by&&w.getBy()>ty) {
 			if(tx<w.getBx()&&tx+40>w.getBx()) {
 				return true;
@@ -358,7 +354,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public boolean checkTop(int tx, int ty, int bx, int by, Wall w) {
 		if(w.getTopX()<bx&&w.getBx()>tx) {
-			if(by>w.getTopY()) {
+			if(by>w.getTopY()&&by-30<w.getTopY()) {
 				return true;
 			}
 		}
@@ -366,46 +362,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public boolean checkBottom(int tx, int ty, int bx, int by, Wall w) {
 		if(w.getTopX()<bx&&w.getBx()>tx) {
-			if(w.getBy()>w.getTopY()&&w.getBy()-40<w.getTopY()) {
+			if(by>w.getBy()&&by-40<w.getBy()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	/*
-	public boolean checkTl(int tx, int ty, int bx, int by, Wall w) {
-		if(w.getTopX()<tx&&w.getBx()>tx) {
-			if(w.getTopY()<ty&&w.getBy()>ty) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public boolean checkTr(int tx, int ty, int bx, int by, Wall w) {
-		if(w.getTopX()<bx&&w.getBx()>bx) {
-			if(w.getTopY()<ty&&w.getBy()>ty) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public boolean checkBl(int tx, int ty, int bx, int by, Wall w) {
-		if(w.getTopX()<tx&&w.getBx()>tx) {
-			if(w.getTopY()<by&&w.getBy()>by) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public boolean checkBr(int tx, int ty, int bx, int by, Wall w) {
-		if(w.getTopX()<bx&&w.getBx()>bx) {
-			if(w.getTopY()<by&&w.getBy()>by) {
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
+	
 	public void shootPortal(Player p, int x, int y, boolean orange) {
 		Shot s1 = new Shot(p.getX(),p.getY(), x, y, 1500, orange);
 		if(s.size() == 0) s.add(0, s1);
@@ -494,19 +457,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		// TODO Auto-generated method stub
 
 		if(arg0.getKeyCode() == 65&&!wallLeft) {
-			movingRight=false;movingLeft=true;
+			holdLeft=true;recentLeft=true;
 			p.turnLeft();
 		}
 
 		if(arg0.getKeyCode() == 68&&!wallRight) {
-			movingRight=true;movingLeft=false;
+			holdRight=true;recentLeft=false;
 			p.turnRight();
 		}
 		if(arg0.getKeyCode() == 87&&p.getGround()) {
 			p.setVY(-12);
 			groundW=null;
 			p.setGround(false);
-			System.out.println("Beve susty");
+			
 		}
 
 
@@ -562,9 +525,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		if((arg0.getKeyCode() == 65 || arg0.getKeyCode() == 68)) {
-			movingRight=false;
-			movingLeft=false;
+		if(arg0.getKeyCode()==65) {
+			holdLeft=false;
+			recentLeft=false;
 			if(p.getGround()) {
 				p.setVX(0);
 			}
@@ -572,6 +535,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				releaseInAir=true;
 			}
 		}
+		if(arg0.getKeyCode()==68) {
+			holdRight=false;
+			recentLeft=false;
+			if(p.getGround()) {
+				p.setVX(0);
+			}
+			else {
+				releaseInAir=true;
+			}
+		}
+		
 		if((arg0.getKeyCode() == 83 || arg0.getKeyCode() == 87)&&p.getGround()) {
 			p.setVY(0);
 		}
