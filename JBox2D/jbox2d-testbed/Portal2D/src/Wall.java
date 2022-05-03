@@ -18,7 +18,6 @@ public class Wall{
 	private int by;
 	private boolean prePortal;
 	private boolean portal;
-<<<<<<< HEAD
 	public Wall(int tox, int ty, int x, int y, boolean portal) {
 		topX=tox;
 		topY=ty;
@@ -40,34 +39,6 @@ public class Wall{
 	}
 	public int getBy() {
 		return this.by;
-=======
-	private boolean horizontal;
-	public Wall(int tox, int ty, int x, int y, boolean portal, boolean horizontal) {
-		topX=tox;
-		topY=ty;
-		bx=x;
-		by=y;
-		this.portal=portal;
-		prePortal = false;
-		this.horizontal = horizontal;
-
-	}
-
-	public int getTopX() {
-		return this.topX;
-	}
-	public int getTopY() {
-		return this.topY;
-	}
-	public int getBx() {
-		return this.bx;
-	}
-	public int getBy() {
-		return this.by;
-	}
-	public boolean getHorizontal() {
-		return this.horizontal;
->>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 	}
 	public boolean getPortal() {
 		return portal;
