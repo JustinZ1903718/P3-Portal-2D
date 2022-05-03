@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 
@@ -16,14 +14,14 @@ public class Portal{
 	private AffineTransform tx;
 	private int x;
 	private int y;
+	private boolean horizontal;
+	private boolean orange;
 	
-	public Portal(int x, int y, boolean orange) {
+	public Portal(int x, int y, boolean orange, boolean horizontal) {
 		this.x = x;
 		this.y = y;
-		if(orange)
-			img = getImage("OrangePortal.gif"); //load the image for Tree
-		else 
-			img = getImage("BluePortal.gif");
+		this.orange = orange;
+		this.horizontal = horizontal;
 		tx = AffineTransform.getTranslateInstance(x, y );
 		init(x, y); 				//initialize the location of the image
 									//use your variables
@@ -35,17 +33,50 @@ public class Portal{
 	public int getY() {
 		return this.y;
 	}
-	
+	public void setX(int x) {
+		this.x = x;
+	}
+	public void setY(int y) {
+		this.y=y;
+	}
+	public boolean getHorizontal() {
+		return horizontal;
+	}
+	public void setHorizontal(boolean horizontal) {
+		
+		this.horizontal = horizontal;
+		
+	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-
+		
 		//call update to update the actualy picture location
+		update();
 		g2.drawImage(img, tx, null);
 		
 		
 
 	}
+	
+	private void update() {
+		System.out.println(horizontal);
+		tx.setToTranslation(x, y);
+		tx.scale(1,1);
+		if(horizontal && orange) {
+			img = getImage("OrangePortalHorizontal.png");
+		}
+		else if(horizontal && !orange) {
+			img = getImage("BluePortalHorizontal.png");
+		}
+		else if(!horizontal && orange) {
+			img = getImage("OrangePortal.gif");
+		}
+		else if(!horizontal && !orange) {
+			img = getImage("BluePortal.gif");
+		}
+	}
+	
 	/* update the picture variable location */
 	
 	

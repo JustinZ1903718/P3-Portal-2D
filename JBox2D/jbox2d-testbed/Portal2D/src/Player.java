@@ -19,10 +19,13 @@ public class Player {
 	private int y;
 	private int vx;
 	private int vy;
+	private double gravity=1;
 	private boolean left;
+	private boolean ground;
 	public Player(int x, int y) {
 		this.x = 100;
 		this.y = 100;
+		ground=false;
 		img = getImage("joey.gif"); 
 		//load the image for Tree
 		tx = AffineTransform.getTranslateInstance(x, y );
@@ -46,6 +49,15 @@ public class Player {
 	}
 	public void setVY(int vy) {
 		this.vy = vy;
+	}
+	public boolean getGround() {
+		return ground;
+	}
+	public void setGround(boolean ground) {
+		this.ground=ground;
+	}
+	public int getVY() {
+		return vy;
 	}
 	public void turnLeft() {
 		img = getImage("joeyleft.gif");
@@ -75,9 +87,14 @@ public class Player {
 		
 
 	}
+	
 	private void update() {
+	
 		x += vx;
-		y += vy;
+		if(!ground) {
+			y+=vy;
+			vy+=gravity;
+		}
 		
 		tx.setToTranslation(x, y);
 		tx.scale(0.8,0.8);
