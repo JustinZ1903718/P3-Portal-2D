@@ -246,7 +246,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				}
 				groundY=w.getTopY()-40;
 				groundW=w;
-//pls woml
+//pls woml  v     v
 			}
 			if(checkBottom(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the bottom
 				p.setY(prevY);p.setVY((int) 0.5*p.getVY());
