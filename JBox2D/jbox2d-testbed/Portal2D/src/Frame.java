@@ -45,6 +45,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean pickUp=false;
 	private boolean p1Horizontal = false;
 	private boolean p2Horizontal = false;
+	private int frameCount = 0;
 
 	Enemy e1=new Enemy(200, 200, 500);
 	Enemy e2=new Enemy(300, 300, 500); 
@@ -62,7 +63,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 	public void paint(Graphics g) {
-
+		frameCount++;
 		super.paintComponent(g);
 		b.paint(g);
 
@@ -83,7 +84,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		if(closePB(p, b) || closeBC(b, c1)) {
 			b.pressed();
-			System.out.println("joey");
 		}
 		else {
 			b.notPressed();
@@ -277,16 +277,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 			if(p.getX()<p1x&&prevX>=p1x) {
 				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-					if(p2Direction == 0) { // top, bottom, left, right
-						p.setX(p2x);
-						p.setY(p2y - 30);
-						p.setVY(-1*p.getVY());
-					}
-					else if(p2Direction == 1) {
-						p.setX(p2x);
-						p.setY(p2y + 30);
-					}
-					else if(p2Direction == 2) {
+					 if(p2Direction == 2) {
 						p.setX(p2x + 30);
 						p.setY(p2y);
 					}
@@ -302,22 +293,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		else {
 			if(p.getY()+50>p1y&&prevY+50<=p1y) {
 				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
-					if(p1Direction == 0) { // top, bottom, left, right
-						p.setX(p1x);
-						p.setY(p1y - 30);
-						p.setVY(-1*p.getVY());
+					if(p2Direction == 0) { // top, bottom, left, right
+						p.setX(p2x);
+						p.setY(p2y - 30);
+						if(p1Direction == 0) p.setVY(-1*p.getVY());
 					}
 					else if(p2Direction == 1) {
-						p.setX(p1x);
-						p.setY(p1y + 30);
-					}
-					else if(p2Direction == 2) {
-						p.setX(p1x + 30);
-						p.setY(p1y);
-					}
-					else if(p2Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
+						p.setX(p2x);
+						p.setY(p2y + 30);
 					}
 					justTele=true;
 					teleported=true;
@@ -333,18 +316,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p.getX()+20>p2x&&prevX+20<=p2x) {
-				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-					p.setX(p1x);
-					p.setY(p1y);
-					justTele=true;
-					teleported=true;
-				}	
-			}
 			if(p.getX()<p2x&&prevX>=p2x) {
 				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-					p.setX(p1x);
-					p.setY(p1y);
+					if(p1Direction == 2) {
+						p.setX(p1x + 30);
+						p.setY(p1y);
+					}
+					else if(p1Direction == 3) {
+						p.setX(p1x - 30);
+						p.setY(p1y);
+					}
 					justTele=true;
 					teleported=true;
 				}	
@@ -353,16 +334,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		else {
 			if(p.getY()+50>p2y&&prevY+50<=p2y) {
 				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
-					p.setX(p1x);
-					p.setY(p1y-40);
-					justTele=true;
-					teleported=true;
-				}	
-			}
-			if(p.getX()<p2y&&prevY>=p2y) {
-				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
-					p.setX(p1x);
-					p.setY(p1y-40);
+					if(p1Direction == 0) { // top, bottom, left, right
+						p.setX(p1x);
+						p.setY(p1y - 40);
+						if(p2Direction == 0) p.setVY(-1*p.getVY());
+					}
+					else if(p1Direction == 1) {
+						p.setX(p1x);
+						p.setY(p1y + 30);
+					}
 					justTele=true;
 					teleported=true;
 				}	
