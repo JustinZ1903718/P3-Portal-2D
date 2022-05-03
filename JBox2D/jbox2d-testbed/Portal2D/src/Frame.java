@@ -39,13 +39,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean recentLeft=false;
 
 	private boolean justTele=false;
+<<<<<<< HEAD
 	private int p1Direction = -1;
 	private int p2Direction = -1;
+=======
+
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 
 	private boolean pickUp=false;
+<<<<<<< HEAD
 	private boolean p1Horizontal = false;
 	private boolean p2Horizontal = false;
 	private int frameCount = 0;
+=======
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 
 	Enemy e1=new Enemy(200, 200, 500);
 	Enemy e2=new Enemy(300, 300, 500); 
@@ -54,16 +61,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Cube c1=new Cube(700, 300);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
+<<<<<<< HEAD
 		walls.add(new Wall(0, 400, 1000, 500, false));
 		walls.add(new Wall(0, 200, 400, 400, false));
 		walls.add(new Wall(500, 200, 1000, 325, false));
+=======
+		walls.add(new Wall(0, 400, 1000, 500, false, true));
+		walls.add(new Wall(0, 200, 400, 400, false, true));
+		walls.add(new Wall(500, 200, 1000, 325, false, true));
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
 
 
 	public void paint(Graphics g) {
+<<<<<<< HEAD
 		frameCount++;
+=======
+
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 		super.paintComponent(g);
 		b.paint(g);
 
@@ -73,8 +90,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		for(Laser i: lasers) {
 			i.paint(g);
 		}
+<<<<<<< HEAD
 		Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
 		Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
+=======
+		Portal p1=new Portal(p1x, p1y, true);
+		Portal p2=new Portal(p2x, p2y, false);
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 		p1.paint(g);
 		p2.paint(g);
 		c.paint(g);
@@ -84,6 +106,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		if(closePB(p, b) || closeBC(b, c1)) {
 			b.pressed();
+<<<<<<< HEAD
+=======
+			System.out.println("joey");
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 		}
 		else {
 			b.notPressed();
@@ -112,6 +138,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		boolean teleported=false;
 
 
+<<<<<<< HEAD
 		if(!holdLeft&&!holdRight) {
 			p.setVX(0);
 		}
@@ -127,6 +154,25 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 			else {
 				p.setVX(5);
+=======
+		if(p.getGround()) {
+			if(!holdLeft&&!holdRight) {
+				p.setVX(0);
+			}
+			if(holdRight&&!holdLeft) {
+				p.setVX(5);
+			}
+			if(!holdRight&&holdLeft) {
+				p.setVX(-5);
+			}
+			if(holdRight&&holdLeft) {
+				if(recentLeft) {
+					p.setVX(-5);
+				}
+				else {
+					p.setVX(5);
+				}
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 			}
 		}
 		p.paint(g);
@@ -141,6 +187,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		c1.paint(g);
+<<<<<<< HEAD
 		
 		for(Wall w: walls) {
 
@@ -247,6 +294,79 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				groundY=w.getTopY()-40;
 				groundW=w;
 //pls woml  v     vfg 
+=======
+
+		for(Wall w: walls) {
+
+
+			if(s.size()!=0) {
+				if(collision((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+
+					if(!w.getPrePortal()) {
+						if(s.get(0).getOrange()) {
+							if(w.getHorizontal()) {
+								p1.setHorizontal(true);
+								p1x = (int) s.get(0).getX()-20;
+								p1y = (int) w.getTopY()-50;
+							}
+							else {
+								p1.setHorizontal(false);
+								p1x = (int) s.get(0).getX()-20;
+								p1y = (int) s.get(0).getY()-58;
+							}
+
+						}
+						else {
+							if(w.getHorizontal()) {
+								p2.setHorizontal(true);
+							}
+							else {
+								p2.setHorizontal(false);
+							}
+							p2x = (int) s.get(0).getX()-20;
+							p2y = (int) w.getTopY()-50;
+						}
+					}
+					w.setPrePortal(true);
+				}
+				else {
+					w.setPrePortal(false);
+					s.get(0).paint(g);
+				}
+
+			}
+
+
+
+
+
+
+
+			if(checkLeft(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the left
+				p.setX(prevX);
+				wallLeft=true; holdLeft=false;holdRight=false;
+				System.out.println("Left");
+			}
+			else {wallRight=false;}
+			if(checkRight(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the right
+				p.setX(prevX);
+				wallRight=true;	
+				System.out.println("Right");
+				holdRight=false;holdLeft=false;
+
+			}
+			else {wallLeft=false;}
+			if(checkTop(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the top
+				p.setGround(true);
+				System.out.println("Top");
+				if(releaseInAir) {
+					p.setVX(0);
+					releaseInAir=false;
+				}
+				groundY=w.getTopY()-40;
+				groundW=w;
+
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 			}
 			if(checkBottom(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the bottom
 				p.setY(prevY);p.setVY((int) 0.5*p.getVY());
@@ -277,6 +397,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 			if(p.getX()<p1x&&prevX>=p1x) {
 				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
+<<<<<<< HEAD
 					 if(p2Direction == 2) {
 						p.setX(p2x + 30);
 						p.setY(p2y);
@@ -285,6 +406,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setX(p2x - 30);
 						p.setY(p2y);
 					}
+=======
+					p.setX(p2x);
+					p.setY(p2y);
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 					justTele=true;
 					teleported=true;
 				}	
@@ -293,6 +418,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		else {
 			if(p.getY()+50>p1y&&prevY+50<=p1y) {
 				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
+<<<<<<< HEAD
 					if(p2Direction == 0) { // top, bottom, left, right
 						p.setX(p2x);
 						p.setY(p2y - 30);
@@ -302,6 +428,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setX(p2x);
 						p.setY(p2y + 30);
 					}
+=======
+					p.setX(p2x);
+					p.setY(p2y-40);
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 					justTele=true;
 					teleported=true;
 				}	
@@ -316,6 +446,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
+<<<<<<< HEAD
 			if(p.getX()<p2x&&prevX>=p2x) {
 				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
 					if(p1Direction == 2) {
@@ -326,6 +457,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setX(p1x - 30);
 						p.setY(p1y);
 					}
+=======
+			if(p.getX()+20>p2x&&prevX+20<=p2x) {
+				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()<p2x&&prevX>=p2x) {
+				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y);
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 					justTele=true;
 					teleported=true;
 				}	
@@ -334,6 +479,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		else {
 			if(p.getY()+50>p2y&&prevY+50<=p2y) {
 				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
+<<<<<<< HEAD
 					if(p1Direction == 0) { // top, bottom, left, right
 						p.setX(p1x);
 						p.setY(p1y - 40);
@@ -343,6 +489,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setX(p1x);
 						p.setY(p1y + 30);
 					}
+=======
+					p.setX(p1x);
+					p.setY(p1y-40);
+					justTele=true;
+					teleported=true;
+				}	
+			}
+			if(p.getX()<p2y&&prevY>=p2y) {
+				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
+					p.setX(p1x);
+					p.setY(p1y-40);
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 					justTele=true;
 					teleported=true;
 				}	
@@ -408,7 +566,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public boolean checkBottom(int tx, int ty, int bx, int by, Wall w) {
 		if(w.getTopX()<bx&&w.getBx()>tx) {
+<<<<<<< HEAD
 			if(by+12>w.getBy()&&ty-12<w.getBy()) {
+=======
+			if(by>w.getBy()&&by-40<w.getBy()) {
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
 				return true;
 			}
 		}

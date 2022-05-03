@@ -63,6 +63,7 @@ public class Shot{
 			g2.setStroke(new BasicStroke(4));
 			if(targetx>x) {
 				g2.drawLine((int) curx, (int) cury, (int) (curx+length/(Math.sqrt(1+slope*slope))), (int) (cury+slope*length/(Math.sqrt(1+slope*slope))));
+<<<<<<< HEAD
 				curx+=9*((double) 1/Math.sqrt(1+slope*slope));
 				cury+=9*((double) slope/Math.sqrt(1+slope*slope));
 		
@@ -85,3 +86,28 @@ public class Shot{
 	
 
 }
+=======
+				curx+=36*((double) 1/Math.sqrt(1+slope*slope));
+				cury+=36*((double) slope/Math.sqrt(1+slope*slope));
+		
+			}
+			else if(targetx!=x) {
+				g2.drawLine((int) curx, (int) cury, (int) (curx-length/(Math.sqrt(1+slope*slope))), (int) (cury-slope*length/(Math.sqrt(1+slope*slope))));
+				curx-=36*(((double) 1)/Math.sqrt(1+slope*slope));
+				cury-=36*((double) slope/Math.sqrt(1+slope*slope));
+		
+			}
+		}
+		
+
+	}
+	/* update the picture variable location */
+	public int dist(int x1, int y1, int x2, int y2) {
+		return (int) (Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)));
+	}
+	
+	
+
+}
+
+>>>>>>> branch 'master' of https://github.com/AdamLevin7/Portal2D.git
