@@ -26,6 +26,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int p1y=9001;
 	private int p2x=9001;
 	private int p2y=9001;
+	
 	private int prevX;
 	private int prevY;
 
@@ -45,13 +46,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean pickUp=false;
 	private boolean p1Horizontal = false;
 	private boolean p2Horizontal = false;
-	private int frameCount = 0;
 
 	Enemy e1=new Enemy(200, 200, 500);
 	Enemy e2=new Enemy(300, 300, 500); 
 	Enemy e3=new Enemy(400, 400, 500);
 	Crosshair c = new Crosshair();
-	Cube c1=new Cube(700, 300);
+	Cube c1=new Cube(350, 80);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
 		walls.add(new Wall(0, 400, 1000, 500, false));
@@ -63,7 +63,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 	public void paint(Graphics g) {
-		frameCount++;
 		super.paintComponent(g);
 		b.paint(g);
 
@@ -131,6 +130,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		p.paint(g);
 		if(pickUp) {
+			c1.setVy(p.getVY());
 			if(!p.getIsLeft()) {
 				c1.setX(p.getX()+50);
 				c1.setY(p.getY()+10);
@@ -223,35 +223,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 
-			if(checkLeft(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the left
-				p.setX(prevX);
-				wallLeft=true; holdLeft=false;holdRight=false;
-				System.out.println("Left");
+			if(pickUp&&p.getIsLeft()) {
+				updateCollision(p.getX()-20, p.getY(), p.getX()+50, p.getY()+40, w);
 			}
-			else {wallRight=false;}
-			if(checkRight(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the right
-				p.setX(prevX);
-				wallRight=true;	
-				System.out.println("Right");
-				holdRight=false;holdLeft=false;
+			else if(pickUp&&!p.getIsLeft()) {
+				updateCollision(p.getX(), p.getY(), p.getX()+70, p.getY()+40, w);
+			}
+			else {
+				updateCollision(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w);
+			}
+			updateCubeLoc(w);
 
-			}
-			else {wallLeft=false;}
-			if(checkTop(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the top
-				p.setGround(true);
-				System.out.println("Top");
-				if(releaseInAir) {
-					p.setVX(0);
-					releaseInAir=false;
-				}
-				groundY=w.getTopY()-40;
-				groundW=w;
-//pls woml  v     v
-			}
-			if(checkBottom(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w)) {//wall on the bottom
-				p.setY(prevY);p.setVY((int) 0.5*p.getVY());
-				System.out.println("Bottom");
-			}
 		}
 
 
@@ -356,6 +338,51 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		prevY=p.getY();
 
 	}
+	public void updateCubeLoc(Wall w) {
+		if(checkLeft(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the left
+			c1.setX(w.getTopX());
+		}
+
+		if(checkRight(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the right
+			c1.setX(w.getBx()-20);
+
+		}
+		if(checkTop(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the top
+			c1.setY(w.getTopY()-20);c1.setVy(0);
+		}
+		if(checkBottom(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the bottom
+			c1.setY(w.getBx());
+		}
+	}
+	public void updateCollision(int TopLeftX, int TopLeftY, int BotRightX, int BotRightY, Wall w) {
+
+		//update the player's location and status based on a certain wall
+		if(checkLeft(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the left
+			p.setX(prevX);
+			wallLeft=true; holdLeft=false;holdRight=false;
+
+			return;
+		}
+		else {wallRight=false;}
+		if(checkRight(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the right
+			p.setX(w.getTopX()-(BotRightX-TopLeftX));
+			wallRight=true;	
+			holdRight=false;holdLeft=false;System.out.println("sdfsfsefse");
+			return;
+		}
+		else {wallLeft=false;}
+		if(checkTop(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the top
+			p.setGround(true);
+			groundY=w.getTopY()-40;
+			groundW=w;
+
+		}
+		if(checkBottom(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the bottom
+			p.setY(prevY);p.setVY((int) 0.5*p.getVY());
+			System.out.println("sfdf");
+		}
+	}
+
 	public int dist(Enemy e, Player p) {
 		int xdif=(e.getX()-p.getX())*(e.getX()-p.getX());
 		int ydif=(e.getY()-p.getY())*(e.getY()-p.getY());

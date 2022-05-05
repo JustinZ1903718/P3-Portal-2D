@@ -15,7 +15,8 @@ public class Cube {
 	private AffineTransform tx;
 	private int x;
 	private int y;
-	
+	private int vy;
+	private int gravity=1;
 	public Cube(int x, int y) {
 		this.x=x;
 		this.y=y;
@@ -37,7 +38,12 @@ public class Cube {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+	public int getVy() {
+		return vy;
+	}
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -57,7 +63,8 @@ public class Cube {
 	private void update() {
 		tx.setToTranslation(x, y);
 		tx.scale(0.4, 0.4);
-		
+		y+=vy;
+		vy+=gravity;
 	}
 	
 	private void init(double a, double b) {
@@ -75,4 +82,5 @@ public class Cube {
 		}
 		return tempImage;
 	}
+	
 }
