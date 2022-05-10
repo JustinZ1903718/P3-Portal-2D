@@ -59,6 +59,9 @@ public class Player {
 	public int getVY() {
 		return vy;
 	}
+	public int getVX() {
+		return vx;
+	}
 	public void turnLeft() {
 		img = getImage("joeyleft.gif");
 		left = true;

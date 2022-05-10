@@ -29,6 +29,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	private int prevX;
 	private int prevY;
+	private int prevprevX;
+	private int prevprevY;
 
 	private int groundY;
 	private Wall groundW=null;
@@ -161,7 +163,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 								p1Horizontal = true;
 								p1Direction = 1;
 								p1x = (int) s.get(0).getX()-30;
-								p1y = (int) w.getBy();
+								p1y = (int) w.getBy()-8;
 							}
 							else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
 								p1Horizontal = false;
@@ -184,14 +186,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 								p2Horizontal = true;
 								p2Direction = 0;
 								p2x = (int) s.get(0).getX();
-								p2y = (int) w.getTopY()-5;
+								p2y = (int) w.getTopY()-6;
 								
 							}
 							else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
 								p2Horizontal = true;
 								p2Direction = 1;
 								p2x = (int) s.get(0).getX();
-								p2y = (int) w.getBy();
+								p2y = (int) w.getBy()-5;
 							}
 							else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
 								p2Horizontal = false;
@@ -249,102 +251,128 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 // sjoeyjie ojyoejhniopyhje
 
 		if(!p1.getHorizontal()) {
-			if(p.getX()+20>p1x&&prevX+20<=p1x) {
+			if(p.getX()+33>p1x&&p.getVX()>0 || p.getX()-33<p1x&&p.getVX()<0) { //orange portal on right wall || portal on left wall
 				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-					p.setX(p2x);
-					p.setY(p2y);
-					justTele=true;
-					teleported=true;
-				}	
-			}
-			if(p.getX()<p1x&&prevX>=p1x) {
-				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-					 if(p2Direction == 2) {
-						p.setX(p2x + 30);
-						p.setY(p2y);
-					}
-					else if(p2Direction == 3) {
-						p.setX(p2x - 30);
-						p.setY(p2y);
-					}
-					justTele=true;
-					teleported=true;
-				}	
-			}
-		}
-		else {
-			if(p.getY()+50>p1y&&prevY+50<=p1y) {
-				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
+						p.setVY(-10);
 						p.setX(p2x);
-						p.setY(p2y - 30);
-						if(p1Direction == 0) p.setVY(-1*p.getVY());
+						p.setY(p2y - 50);
 					}
 					else if(p2Direction == 1) {
 						p.setX(p2x);
-						p.setY(p2y + 30);
+						p.setY(p2y - 35);
 					}
-					justTele=true;
-					teleported=true;
-				}	
+					if(p2Direction == 2) {
+						p.setX(p2x+20);
+						p.setY(p2y);
+					}
+					else if(p2Direction == 3) {
+						p.setX(p2x - 35);
+						p.setY(p2y);
+					}
+				}
+				justTele=true;
+				teleported=true;
 			}
-			if(p.getX()+50<p1y&&prevY+50>=p1y) {
+		}
+		else {
+			if(p.getY()+33>p1y&&p.getVY()>0 || p.getY()-20<p1y&&p.getVY()<0) { //orange portal is on floor or ceiling
 				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
-					p.setX(p2x);
-					p.setY(p2y-40);
+					if(p2Direction == 0) { // top, bottom, left, right
+						if(p2Direction == 0) {
+							p.setVY(-1*p.getVY());
+							p.setX(p2x);
+							p.setY(p2y - 50);
+						}
+					}
+					else if(p2Direction == 1) {
+						p.setX(p2x);
+						p.setY(p2y - 35);
+					}
+					 if(p2Direction == 2) {
+							p.setX(p2x+20);
+							p.setY(p2y);
+						}
+						else if(p2Direction == 3) {
+							p.setX(p2x - 35);
+							p.setY(p2y);
+						}
 					justTele=true;
 					teleported=true;
 				}	
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p.getX()<p2x&&prevX>=p2x) {
+			if(p.getX()+33>p2x&&p.getVX()>0 || p.getX()<p2x&&p.getVX()<0) { //blue portal on right || left wall
 				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-					if(p1Direction == 2) {
-						p.setX(p1x + 30);
-						p.setY(p1y);
-					}
-					else if(p1Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
-					}
-					justTele=true;
-					teleported=true;
-				}	
-			}
-		}
-		else {
-			if(p.getY()+50>p2y&&prevY+50<=p2y) {
-				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
+						p.setVY(-10);
 						p.setX(p1x);
-						p.setY(p1y - 40);
-						if(p2Direction == 0) p.setVY(-1*p.getVY());
+						p.setY(p1y - 50);
+
 					}
 					else if(p1Direction == 1) {
 						p.setX(p1x);
-						p.setY(p1y + 30);
+						p.setY(p1y + 35);
 					}
+					if(p1Direction == 2) {
+						p.setX(p1x + 35);
+						p.setY(p1y);
+					}
+					else if(p1Direction == 3) {
+						p.setX(p1x - 35);
+						p.setY(p1y);
+					}
+				}	
+				justTele=true;
+				teleported=true;
+			}
+			
+		}
+		else {
+			if(p.getY()+33>p2y&&p.getVY()>0 || p.getY()-20<p2y&&p.getVY()<0) { //blue portal is on floor || ceiling
+				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
+					if(p1Direction == 0) { // top, bottom, left, right
+						if(p2Direction == 0) {
+							p.setX(p1x);
+							p.setY(p1y - 50);
+							p.setVY(-1*p.getVY());
+						}
+						
+					}
+					else if(p1Direction == 1) {
+						p.setX(p1x);
+						p.setY(p1y + 35);
+					}
+					 if(p1Direction == 2) {
+							p.setX(p1x + 35);
+							p.setY(p1y);
+						}
+						else if(p1Direction == 3) {
+							p.setX(p1x - 35);
+							p.setY(p1y);
+						}
 					justTele=true;
 					teleported=true;
 				}	
 			}
 		}
-
 		if(justTele&&!teleported) {
 			justTele=false;
 		}
+		prevprevX = prevX;
+		prevprevY = prevY;
 		prevX=p.getX();
 		prevY=p.getY();
 
 	}
 	public void updateCubeLoc(Wall w) {
 		if(checkLeft(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the left
-			c1.setX(w.getTopX());
+			c1.setX(w.getBx()-20);
 		}
 
 		if(checkRight(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the right
-			c1.setX(w.getBx()-20);
+			c1.setX(w.getTopX());
 
 		}
 		if(checkTop(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the top
@@ -358,7 +386,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		//update the player's location and status based on a certain wall
 		if(checkLeft(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the left
-			p.setX(prevX);
+			p.setX(w.getBx());
 			wallLeft=true; holdLeft=false;holdRight=false;
 
 			return;
@@ -367,7 +395,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(checkRight(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the right
 			p.setX(w.getTopX()-(BotRightX-TopLeftX));
 			wallRight=true;	
-			holdRight=false;holdLeft=false;System.out.println("sdfsfsefse");
+			holdRight=false;holdLeft=false;
 			return;
 		}
 		else {wallLeft=false;}
@@ -379,7 +407,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(checkBottom(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the bottom
 			p.setY(prevY);p.setVY((int) 0.5*p.getVY());
-			System.out.println("sfdf");
 		}
 	}
 

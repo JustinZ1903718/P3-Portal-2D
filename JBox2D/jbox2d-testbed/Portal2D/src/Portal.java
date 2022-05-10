@@ -60,7 +60,6 @@ public class Portal{
 	}
 	
 	private void update() {
-		System.out.println(horizontal);
 		tx.setToTranslation(x, y);
 		tx.scale(1,1);
 		if(horizontal && orange) {
