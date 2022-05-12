@@ -48,17 +48,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean pickUp=false;
 	private boolean p1Horizontal = false;
 	private boolean p2Horizontal = false;
+	private int wallP1 = -1;
+	private int wallP2 = -1;
 
-	Enemy e1=new Enemy(200, 200, 500);
-	Enemy e2=new Enemy(300, 300, 500); 
-	Enemy e3=new Enemy(400, 400, 500);
+	Enemy e1=new Enemy(250, 150, 500);
+	Enemy e2=new Enemy(700, 150, 500); 
+	Enemy e3=new Enemy(700, 350, 500);
 	Crosshair c = new Crosshair();
 	Cube c1=new Cube(350, 80);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
-		walls.add(new Wall(0, 400, 1000, 500, false));
-		walls.add(new Wall(0, 200, 400, 400, false));
-		walls.add(new Wall(500, 200, 1000, 325, false));
+		walls.add(new Wall(0, 400, 1000, 500, false, 0));
+		walls.add(new Wall(0, 200, 400, 400, false, 1));
+		walls.add(new Wall(500, 200, 1000, 325, false, 2));
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
@@ -72,8 +74,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			w.paint(g);
 		}
 		for(Laser i: lasers) {
+			if(!i.getPaint()) {
+				lasers.remove(i);
+			}
 			i.paint(g);
+			if(pickUp&&hitL(c1.getX()-5, c1.getY()-15, c1.getX()+30, c1.getY()+40, i)) {
+				lasers.remove(i);
+			}
+			
+			for(Wall w: walls) {
+				if(hitL(w.getTopX(), w.getTopY(), w.getBx(), w.getBy(), i)) {
+					lasers.remove(i);
+				}
+			}
+			if(hitL(p.getX()+5, p.getY(), p.getX()+32, p.getY()+40, i)) {
+				p.setDead(true);
+			}
+			
 		}
+
+
 		Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
 		Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
 		p1.paint(g);
@@ -152,11 +172,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 					
 					if(!w.getPrePortal()) {
 						if(s.get(0).getOrange()) {
+							wallP1 = w.getNum();
 							if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
 								p1Horizontal = true;
 								p1Direction = 0;
 								p1x = (int) s.get(0).getX()-30;
-								p1y = (int) w.getTopY()-10;
+								p1y = (int) w.getTopY()-8;
 								
 							}
 							else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
@@ -182,11 +203,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 						}
 						else {
+							wallP2 = w.getNum();
 							if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
 								p2Horizontal = true;
 								p2Direction = 0;
 								p2x = (int) s.get(0).getX();
-								p2y = (int) w.getTopY()-6;
+								p2y = (int) w.getTopY()-8;
 								
 							}
 							else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
@@ -246,28 +268,34 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 		if(p.getGround()) {
-			p.setY(groundY);
+			if(prevY == prevprevY) {
+				p.setY(groundY);
+			}
+			p.setVY(0);
+			
 		}// joey
 // sjoeyjie ojyoejhniopyhje
 
-		if(!p1.getHorizontal()) {
-			if(p.getX()+33>p1x&&p.getVX()>0 || p.getX()-33<p1x&&p.getVX()<0) { //orange portal on right wall || portal on left wall
+		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
+			if(p1Direction == 3 && p.getX()+35>p1x&&p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 && p.getX()-35<p1x&&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
 				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
 						p.setVY(-10);
+						groundY=walls.get(wallP2).getTopY()-40;
+						groundW = walls.get(wallP2);
 						p.setX(p2x);
 						p.setY(p2y - 50);
 					}
 					else if(p2Direction == 1) {
 						p.setX(p2x);
-						p.setY(p2y - 35);
+						p.setY(p2y+20);
 					}
 					if(p2Direction == 2) {
 						p.setX(p2x+20);
 						p.setY(p2y);
 					}
 					else if(p2Direction == 3) {
-						p.setX(p2x - 35);
+						p.setX(p2x - 30);
 						p.setY(p2y);
 					}
 				}
@@ -276,25 +304,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		else {
-			if(p.getY()+33>p1y&&p.getVY()>0 || p.getY()-20<p1y&&p.getVY()<0) { //orange portal is on floor or ceiling
+			if(p1Direction == 0 && p.getY()+45>p1y&&p.getVY()>0 && !(p.getY()> p1y)|| p1Direction == 1 && p.getY()-35<p1y&&p.getVY()<0 && !(p.getY()< p1y)) { //orange portal is on floor or ceiling
 				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
-						if(p2Direction == 0) {
+						if(p1Direction == 0) {
 							p.setVY(-1*p.getVY());
-							p.setX(p2x);
-							p.setY(p2y - 50);
+							
 						}
+						p.setX(p2x);
+						p.setY(p2y - 50);
 					}
 					else if(p2Direction == 1) {
 						p.setX(p2x);
-						p.setY(p2y - 35);
+						p.setY(p2y+20);
 					}
 					 if(p2Direction == 2) {
 							p.setX(p2x+20);
 							p.setY(p2y);
 						}
 						else if(p2Direction == 3) {
-							p.setX(p2x - 35);
+							p.setX(p2x - 30);
 							p.setY(p2y);
 						}
 					justTele=true;
@@ -303,24 +332,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p.getX()+33>p2x&&p.getVX()>0 || p.getX()<p2x&&p.getVX()<0) { //blue portal on right || left wall
+			if(p2Direction == 3 && p.getX()+50>p2x&&p.getVX()>0 && !(p.getX()> p2x)|| p2Direction == 2 && p.getX()-10<p2x&&p.getVX()<0 && !(p.getX()< p2x)) { //blue portal on right || left wall
 				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
 						p.setVY(-10);
+						groundY=walls.get(wallP1).getTopY()-40;
+						groundW = walls.get(wallP1);
 						p.setX(p1x);
 						p.setY(p1y - 50);
 
 					}
 					else if(p1Direction == 1) {
 						p.setX(p1x);
-						p.setY(p1y + 35);
+						p.setY(p1y+20);
 					}
 					if(p1Direction == 2) {
-						p.setX(p1x + 35);
+						p.setX(p1x + 20);
 						p.setY(p1y);
 					}
 					else if(p1Direction == 3) {
-						p.setX(p1x - 35);
+						p.setX(p1x - 30);
 						p.setY(p1y);
 					}
 				}	
@@ -330,26 +361,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			
 		}
 		else {
-			if(p.getY()+33>p2y&&p.getVY()>0 || p.getY()-20<p2y&&p.getVY()<0) { //blue portal is on floor || ceiling
+			if(p2Direction == 0 && p.getY()+45>p2y&&p.getVY()>0  && !(p.getY()> p2y)|| p2Direction == 1 && p.getY()-35<p2y&&p.getVY()<0  && !(p.getY()< p2y)) { //blue portal is on floor || ceiling
 				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
 						if(p2Direction == 0) {
-							p.setX(p1x);
-							p.setY(p1y - 50);
 							p.setVY(-1*p.getVY());
 						}
+						p.setX(p1x);
+						p.setY(p1y - 50);
 						
 					}
 					else if(p1Direction == 1) {
 						p.setX(p1x);
-						p.setY(p1y + 35);
+						p.setY(p1y+20);
 					}
 					 if(p1Direction == 2) {
-							p.setX(p1x + 35);
+							p.setX(p1x + 20);
 							p.setY(p1y);
 						}
 						else if(p1Direction == 3) {
-							p.setX(p1x - 35);
+							p.setX(p1x - 30);
 							p.setY(p1y);
 						}
 					justTele=true;
@@ -359,6 +390,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(justTele&&!teleported) {
 			justTele=false;
+		}
+		System.out.println(p.getVY());
+		if(prevprevX == p.getX()) {
+			p.setVX(0);
 		}
 		prevprevX = prevX;
 		prevprevY = prevY;
@@ -408,6 +443,27 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(checkBottom(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the bottom
 			p.setY(prevY);p.setVY((int) 0.5*p.getVY());
 		}
+	}
+	private boolean hitL(int tx, int ty, int bx, int by, Laser l) {
+		double curx;double cury;double bigx;
+		if(l.getX()<l.getOtherX()) {
+			curx=l.getX();bigx=l.getOtherX();
+			cury=l.getY();
+		}
+		else {
+			curx=l.getOtherX();bigx=l.getX();
+			cury=l.getOtherY();
+		}
+		while(curx<bigx) {
+			if(curx>tx&&curx<bx) {
+				if(cury<by&&cury>ty) {
+					return true;
+				}
+			}
+			curx++;
+			cury+=l.getSlope();
+		}
+		return false;
 	}
 
 	public int dist(Enemy e, Player p) {

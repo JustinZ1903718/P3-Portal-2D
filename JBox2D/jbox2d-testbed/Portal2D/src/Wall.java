@@ -18,14 +18,15 @@ public class Wall{
 	private int by;
 	private boolean prePortal;
 	private boolean portal;
-	public Wall(int tox, int ty, int x, int y, boolean portal) {
+	private int num;
+	public Wall(int tox, int ty, int x, int y, boolean portal, int num) {
 		topX=tox;
 		topY=ty;
 		bx=x;
 		by=y;
 		this.portal=portal;
 		prePortal = false;
-
+		this.num = num;
 	}
 
 	public int getTopX() {
@@ -48,6 +49,9 @@ public class Wall{
 	}
 	public void setPrePortal(boolean prePortal) {
 		this.prePortal = prePortal;
+	}
+	public int getNum() {
+		return num;
 	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen

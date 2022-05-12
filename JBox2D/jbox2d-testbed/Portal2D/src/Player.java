@@ -22,6 +22,7 @@ public class Player {
 	private double gravity=1;
 	private boolean left;
 	private boolean ground;
+	private boolean dead;
 	public Player(int x, int y) {
 		this.x = 100;
 		this.y = 100;
@@ -56,6 +57,12 @@ public class Player {
 	public void setGround(boolean ground) {
 		this.ground=ground;
 	}
+	public boolean getDead() {
+		return dead;
+	}
+	public void setDead(boolean dead) {
+		this.dead=dead;
+	}
 	public int getVY() {
 		return vy;
 	}
@@ -85,7 +92,7 @@ public class Player {
 		
 		
 		
-		g2.drawImage(img, tx, null);
+		if(!dead) g2.drawImage(img, tx, null);
 		
 		
 

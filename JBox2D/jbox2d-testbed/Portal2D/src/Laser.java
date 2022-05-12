@@ -24,7 +24,7 @@ public class Laser{
 	private int range;
 	private double slope;
 	private int length=30;
-
+	private boolean paint;
 	
 	
 	public Laser(int x, int y, int targetx, int targety, int range) {
@@ -35,6 +35,7 @@ public class Laser{
 		this.targetx = targetx;
 		this.targety = targety;
 		this.range=range;
+		paint=true;
 		if(targetx!=curx) {
 			slope=((double) (targety-cury))/(targetx-curx);
 		}
@@ -49,7 +50,18 @@ public class Laser{
 	public double getY() {
 		return this.cury;
 	}
-	
+	public double getOtherX() {
+		return curx+length/(Math.sqrt(1+slope*slope));
+	}
+	public double getOtherY() {
+		return cury+slope*length/(Math.sqrt(1+slope*slope));
+	}
+	public double getSlope() {
+		return slope;
+	}
+	public boolean getPaint() {
+		return paint;
+	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -68,6 +80,9 @@ public class Laser{
 				cury-=9*((double) slope/Math.sqrt(1+slope*slope));
 		
 			}
+		}
+		else {
+			paint=false;
 		}
 		
 
