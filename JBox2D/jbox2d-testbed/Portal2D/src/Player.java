@@ -103,7 +103,9 @@ public class Player {
 		x += vx;
 		if(!ground) {
 			y+=vy;
-			vy+=gravity;
+			if(vy<20) {
+				vy+=gravity;
+			}
 		}
 		
 		tx.setToTranslation(x, y);

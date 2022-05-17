@@ -50,6 +50,15 @@ public class Shot{
 	public double getY() {
 		return this.cury;
 	}
+	public double getOtherX() {
+		return curx+length/(Math.sqrt(1+slope*slope));
+	}
+	public double getOtherY() {
+		return cury+slope*length/(Math.sqrt(1+slope*slope));
+	}
+	public double getSlope() {
+		return slope;
+	}
 	public boolean getOrange() {
 		return orange;
 	}
@@ -63,14 +72,14 @@ public class Shot{
 			g2.setStroke(new BasicStroke(4));
 			if(targetx>x) {
 				g2.drawLine((int) curx, (int) cury, (int) (curx+length/(Math.sqrt(1+slope*slope))), (int) (cury+slope*length/(Math.sqrt(1+slope*slope))));
-				curx+=9*((double) 1/Math.sqrt(1+slope*slope));
-				cury+=9*((double) slope/Math.sqrt(1+slope*slope));
+				curx+=7*((double) 1/Math.sqrt(1+slope*slope));
+				cury+=7*((double) slope/Math.sqrt(1+slope*slope));
 		
 			}
 			else if(targetx!=x) {
 				g2.drawLine((int) curx, (int) cury, (int) (curx-length/(Math.sqrt(1+slope*slope))), (int) (cury-slope*length/(Math.sqrt(1+slope*slope))));
-				curx-=9*(((double) 1)/Math.sqrt(1+slope*slope));
-				cury-=9*((double) slope/Math.sqrt(1+slope*slope));
+				curx-=7*(((double) 1)/Math.sqrt(1+slope*slope));
+				cury-=7*((double) slope/Math.sqrt(1+slope*slope));
 		
 			}
 		}

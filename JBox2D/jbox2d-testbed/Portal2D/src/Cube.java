@@ -15,6 +15,7 @@ public class Cube {
 	private AffineTransform tx;
 	private int x;
 	private int y;
+	private int vx;
 	private int vy;
 	private int gravity=1;
 	public Cube(int x, int y) {
@@ -38,7 +39,13 @@ public class Cube {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public int getVy() {
+	public void setVx(int v) {
+		vx=v;
+	}
+	public int getVx() {
+		return vx;
+	}
+ 	public int getVy() {
 		return vy;
 	}
 	public void setVy(int vy) {

@@ -18,9 +18,11 @@ public class Button {
 	private int x;
 	private int y;
 	private boolean pressed;
-	public Button(int x, int y) {
+	private int wallIndex;
+	public Button(int x, int y, int w) {
 		this.x = x;
 		this.y = y;
+		wallIndex=w;
 		img = getImage("unpressedButton.png"); 
 		//load the image for Tree
 		tx = AffineTransform.getTranslateInstance(x, y );
@@ -45,13 +47,12 @@ public class Button {
 	public void setPressed(boolean p) {
 		pressed = p;
 	}
-	public void notPressed() {
-		img = getImage("unpressedButton.png");
+	public int getWallIndex() {
+		return wallIndex;
 	}
-	public void pressed() {
-		img = getImage("pressed.png");
+	public void setWallIndex(int w) {
+		wallIndex=w;
 	}
-
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -61,8 +62,12 @@ public class Button {
 		update();
 		
 		
-		
-		
+		if(getPressed()) {
+			img = getImage("pressed.png");
+		}
+		else {
+			img = getImage("unpressedButton.png");
+		}
 		g2.drawImage(img, tx, null);
 		
 		
