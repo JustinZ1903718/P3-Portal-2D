@@ -63,9 +63,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Cube c1=new Cube(350, 80);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
-		walls.add(new Wall(250, 400, 1000, 500, true, 0));
+		walls.add(new Wall(200, 400, 1000, 500, true, 0));
 		walls.add(new Wall(0, 200, 250, 400, true, 1));
-		walls.add(new Wall(500, 200, 1000, 325, true, 2));
+		walls.add(new Wall(500, 200, 1000, 400, true, 2));
 		walls.add(new Wall(600, 0, 650, 400, false, 3));
 		walls.add(new Wall(0, 0, 2000, 10, false, 3));
 	}
@@ -100,11 +100,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				}
 			}
 			if(hitL(p.getX()+5, p.getY(), p.getX()+32, p.getY()+40, i)) {
-				p.setDead(true);
+				resetLevel();
 			}
 
 		}
-
+		if(closePC(p, c1)) {
+			if(p.getVX()>0&&p.getX()<c1.getX()) {
+				c1.setVx(p.getVX());
+				c1.addX();
+			}
+			if(p.getVX()<0&&p.getX()>c1.getX()) {
+				c1.setVx(p.getVX());
+				c1.addX();
+			}
+		}
 
 		Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
 		Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
@@ -122,13 +131,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			b.setPressed(false);
 		}
 		if(closeEC(e1, c1)) {
-			e1.setDead();
+			e1.setDead(true);
 		}
 		if(closeEC(e2, c1)) {
-			e2.setDead();
+			e2.setDead(true);
 		}
 		if(closeEC(e3, c1)) {
-			e3.setDead();
+			e3.setDead(true);
 		}
 
 
@@ -178,111 +187,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		for(Wall w: walls) {
 			if(w.getExist()) {
 
-				if(s.size()!=0) {
-					if(collision((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-
-						if(!w.getPrePortal()) {
-							if(!w.getPortal()) {
-								if(s.size()!=0) {
-									s.remove(0);
-								}
-							}
-							else {
-								if(s.get(0).getOrange()) {
-									wallP1 = w.getNum();
-									if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-										p1Horizontal = true;
-										p1Direction = 0;
-										if(s.get(0).getX()-30 < w.getTopX()) p1x = w.getTopX();
-										else if(s.get(0).getX()+30 > w.getBx()) p1x = w.getBx()-60;
-										else p1x = (int) s.get(0).getX()-30;
-										p1y = (int) w.getTopY()-8;
-
-									}
-									else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-										p1Horizontal = true;
-										p1Direction = 1;
-										if(s.get(0).getX()-30 < w.getTopX()) p1x = w.getTopX();
-										else if(s.get(0).getX()+30 > w.getBx()) p1x = w.getBx()-60;
-										else p1x = (int) s.get(0).getX()-30;
-										p1y = (int) w.getBy()-8;
-									}
-									else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
-										p1Horizontal = false;
-										p1Direction = 2;
-										p1x = (int) w.getBx()-30;
-										if(s.get(0).getY()-30 < w.getTopY()) p1y = w.getTopY();
-										else if(s.get(0).getY()+25 > w.getBy()) p1y = w.getBy()-55;
-										else p1y = (int) s.get(0).getY()-30;
-									}
-									else if(checkRight((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
-										p1Horizontal = false;
-										p1Direction = 3;
-										System.out.println(s.get(0).getY());
-										System.out.println(w.getBy());
-										p1x = (int) w.getTopX()-30;
-										if(s.get(0).getY() -30 < w.getTopY()) p1y = w.getTopY();
-										else if(s.get(0).getY()+25 > w.getBy()) p1y = w.getBy()-55;
-										else p1y = (int) s.get(0).getY()-30;
-									}
-									if(s.size() != 0) s.remove(0);
-
-
-								}
-								else {
-									wallP2 = w.getNum();
-									if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-										p2Horizontal = true;
-										p2Direction = 0;
-										if(s.get(0).getX()-30 < w.getTopX()) p2x = w.getTopX();
-										else if(s.get(0).getX()+30 > w.getBx()) p2x = w.getBx()-60;
-										else p2x = (int) s.get(0).getX()-30;
-										p2y = (int) w.getTopY()-8;
-
-									}
-									else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
-										p2Horizontal = true;
-										p2Direction = 1;
-										if(s.get(0).getX()-30 < w.getTopX()) p2x = w.getTopX();
-										else if(s.get(0).getX()+30 > w.getBx()) p2x = w.getBx()-60;
-										else p2x = (int) s.get(0).getX()-30;
-										p2y = (int) w.getBy()-5;
-									}
-									else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
-										p2Horizontal = false;
-										p2Direction = 2;
-										p2x = (int) w.getBx();
-										p2y = (int) (s.get(0).getY());
-										if(s.get(0).getY()-30 < w.getTopY()) p2y = w.getTopY();
-										else if(s.get(0).getY()+25 > w.getBy()-5) p2y = w.getBy()-55;
-										else p2y = (int) s.get(0).getY()-30;
-									}
-									else if(checkRight((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
-										p2Horizontal = false;
-										p2Direction = 3;
-										p2x = (int) w.getTopX();
-										if(s.get(0).getY()-30 < w.getTopY()) p2y = w.getTopY();
-										else if(s.get(0).getY()+25 > w.getBy()) p2y = w.getBy()-55;
-										else p2y = (int) s.get(0).getY()-30;
-									}
-									if(s.size() !=0) s.remove(0);
-								}
-							}
-						}
-						w.setPrePortal(true);
-					}
-					else {
-						w.setPrePortal(false);
-						s.get(0).paint(g);
-					}
-				}
-
-
-
-
-
-
-				/*
+				shootPortal(w, g);
 				if(pickUp&&p.getIsLeft()) {
 					updateCollision(p.getX()-20, p.getY(), p.getX()+50, p.getY()+40, w);
 				}
@@ -292,8 +197,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				else {
 					updateCollision(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w);
 				}
-				 */
-				updateCollision(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w);
+
+
 				updateCubeLoc(w);
 			}
 		}
@@ -305,139 +210,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 
-		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
-			if(p1Direction == 3 && p.getX()+35>p1x&&p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 && p.getX()-35<p1x&&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
-				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-					if(p2Direction == 0) { // top, bottom, left, right
-						p.setVX(-10);
-						groundY=walls.get(wallP2).getTopY()-40;
-						groundW = walls.get(wallP2);
-						p.setX(p2x);
-						p.setY(p2y - 50);
-					}
-					else if(p2Direction == 1) {
-						p.setX(p2x);
-						p.setY(p2y+20);
-					}
-					if(p2Direction == 2) {
-						p.setX(p2x+20);
-						p.setY(p2y);
-						p.setVX(5);
-					}
-					else if(p2Direction == 3) {
-						p.setX(p2x - 30);
-						p.setY(p2y);
-						p.setVX(-5);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
-				}
-
-			}
-		}
-		else {
-			if(p1Direction == 0 && p.getY()+45>p1y&&p.getVY()>0 && !(p.getY()> p1y)|| p1Direction == 1 && p.getY()-35<p1y&&p.getVY()<0 && !(p.getY()< p1y)) { //orange portal is on floor or ceiling
-				if(Math.abs(p.getX()-15-p1x)<50&&!justTele&&p2x!=9001) {
-					if(p2Direction == 0) { // top, bottom, left, right
-						if(p1Direction == 0) {
-							p.setVY(-1*p.getVY());
-
-						}
-						p.setX(p2x);
-						p.setY(p2y - 50);
-					}
-					else if(p2Direction == 1) {
-						p.setX(p2x);
-						p.setY(p2y+20);
-					}
-					if(p2Direction == 2) {
-						p.setX(p2x+20);
-						p.setY(p2y);
-						p.setVX(5);p.setVY(0);
-					}
-					else if(p2Direction == 3) {
-						p.setX(p2x - 30);
-						p.setY(p2y);
-						p.setVX(-5);p.setVY(0);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
-				}	
-			}
-		}
-		if(!p2.getHorizontal()) {
-			if(p2Direction == 3 && p.getX()+50>p2x&&p.getVX()>0 && !(p.getX()> p2x)|| p2Direction == 2 && p.getX()-10<p2x&&p.getVX()<0 && !(p.getX()< p2x)) { //blue portal on right || left wall
-				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-					if(p1Direction == 0) { // top, bottom, left, right
-						p.setVY(-10);
-						groundY=walls.get(wallP1).getTopY()-40;
-						groundW = walls.get(wallP1);
-						p.setX(p1x);
-						p.setY(p1y - 50);
-
-					}
-					else if(p1Direction == 1) {
-						p.setX(p1x);
-						p.setY(p1y+20);
-					}
-					if(p1Direction == 2) {
-						p.setX(p1x + 20);
-						p.setY(p1y);
-						p.setVX(5);p.setVY(0);
-					}
-					else if(p1Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
-						p.setVX(-5);p.setVY(0);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
-				}	
-
-			}
-
-		}
-		else {
-			if(p2Direction == 0 && p.getY()+45>p2y&&p.getVY()>0  && !(p.getY()> p2y)|| p2Direction == 1 && p.getY()-35<p2y&&p.getVY()<0  && !(p.getY()< p2y)) { //blue portal is on floor || ceiling
-				if(Math.abs(p.getX()-15-p2x)<50&&!justTele&&p1x!=9001) {
-					if(p1Direction == 0) { // top, bottom, left, right
-						if(p2Direction == 0) {
-							p.setVY(-1*p.getVY());
-						}
-						p.setX(p1x);
-						p.setY(p1y - 50);
-
-					}
-					else if(p1Direction == 1) {
-						p.setX(p1x);
-						p.setY(p1y+20);
-					}
-					if(p1Direction == 2) {
-						p.setX(p1x + 20);
-						p.setY(p1y);
-						p.setVX(5);p.setVY(0);
-						groundW=null;
-						p.setGround(false);
-					}
-					else if(p1Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
-						p.setVX(-5);p.setVY(0);
-						groundW=null;
-						p.setGround(false);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
-
-				}	
-			}
-		}
-
-		System.out.println(groundW);
+		teleportPlayer(p1, p2);
+		teleportCube(p1, p2);
 		if(p.getGround()) {
 			if(prevY == prevprevY) {
 				p.setY(groundY);
@@ -445,7 +219,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			p.setVY(0);
 
 		}
-		System.out.println(p.getVX());
 		if(justTele) {
 			justTele=false;
 		}
@@ -454,7 +227,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		prevprevY = prevY;
 		prevX=p.getX();
 		prevY=p.getY();
-
+		System.out.println(c1.getVx());
 	}
 	public void updateCubeLoc(Wall w) {
 		if(checkLeft(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the left
@@ -474,26 +247,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public void teleportCube(Portal p1, Portal p2) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
-			if(p1Direction == 3 && c1.getX()+15>p1x&&c1.getVx()>0 && !(c1.getX()> p1x)|| p1Direction == 2 && c1.getX()-15<p1x&&c1.getVx()<0 && !(c1.getX()< p1x)) { //orange portal on right wall || portal on left wall
+			if(p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()> p1x)|| p1Direction == 2 && c1.getX()-15<p1x&&c1.getVx()<0 && !(c1.getX()< p1x)) { //orange portal on right wall || portal on left wall
 				if(Math.abs(c1.getY()-15-p1y)<50&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
 						c1.setVx(-10);
-						c1.setX(p2x);
+						c1.setX(p2x+20);
 						c1.setY(p2y - 50);
 					}
 					else if(p2Direction == 1) {
-						c1.setX(p2x);
+						c1.setX(p2x+20);
 						c1.setY(p2y+20);
 					}
 					if(p2Direction == 2) {
+						c1.setVx(5);
 						c1.setX(p2x+20);
 						c1.setY(p2y);
-						c1.setVx(5);
 					}
 					else if(p2Direction == 3) {
-						c1.setX(p2x - 30);
-						c1.setY(p2y);
 						c1.setVx(-5);
+						c1.setX(p2x - 10);
+						c1.setY(p2y);
 					}
 				}
 
@@ -507,24 +280,24 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 							c1.setVy(-1*c1.getVy());
 
 						}
-						c1.setX(p2x);
+						c1.setX(p2x+20);
 						c1.setY(p2y - 50);
 					}
 					else if(p2Direction == 1) {
-						c1.setX(p2x);
+						c1.setX(p2x+20);
 						c1.setY(p2y+20);
 					}
 					if(p2Direction == 2) {
+						c1.setVx(5);c1.setVy(0);
 						c1.setX(p2x+20);
 						c1.setY(p2y);
-						c1.setVx(5);c1.setVy(0);
 					}
 					else if(p2Direction == 3) {
-						c1.setX(p2x - 30);
-						c1.setY(p2y);
 						c1.setVx(-5);c1.setVy(0);
+						c1.setX(p2x - 10);
+						c1.setY(p2y);
 					}
-					
+
 				}	
 			}
 		}
@@ -533,13 +306,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				if(Math.abs(c1.getY()-15-p2y)<50&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
 						c1.setVy(-10);
-						
-						c1.setX(p1x);
+						c1.setX(p1x+20);
 						c1.setY(p1y - 50);
 
 					}
 					else if(p1Direction == 1) {
-						c1.setX(p1x);
+						c1.setX(p1x+20);
 						c1.setY(p1y+20);
 					}
 					if(p1Direction == 2) {
@@ -548,11 +320,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						c1.setVx(5);c1.setVy(0);
 					}
 					else if(p1Direction == 3) {
-						c1.setX(p1x - 30);
-						c1.setY(p1y);
 						c1.setVx(-5);c1.setVy(0);
+						c1.setX(p1x - 10);
+						c1.setY(p1y);
 					}
-					
+
 				}	
 
 			}
@@ -565,68 +337,163 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						if(p2Direction == 0) {
 							c1.setVy(-1*c1.getVy());
 						}
-						c1.setX(p1x);
+						c1.setX(p1x+20);
 						c1.setY(p1y - 50);
 
 					}
 					else if(p1Direction == 1) {
-						p.setX(p1x);
-						p.setY(p1y+20);
+						c1.setX(p1x+20);
+						c1.setY(p1y+20);
 					}
 					if(p1Direction == 2) {
-						p.setX(p1x + 20);
-						p.setY(p1y);
-						p.setVX(5);p.setVY(0);
+						c1.setVx(5);c1.setVy(0);
+						c1.setX(p1x + 20);
+						c1.setY(p1y);
 						groundW=null;
 						p.setGround(false);
 					}
 					else if(p1Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
-						p.setVX(-5);p.setVY(0);
-						groundW=null;
-						p.setGround(false);
+						c1.setVx(-5);c1.setVy(0);
+						c1.setX(p1x - 10);
+						c1.setY(p1y);
 					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
 
 				}	
 			}
 		}
 	}
 
+	public void shootPortal(Wall w, Graphics g) {
+		if(s.size()!=0) {
+			if(collision((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
 
+				if(!w.getPrePortal()) {
+					if(!w.getPortal()) {
+						if(s.size()!=0) {
+							s.remove(0);
+						}
+					}
+					else {
+						if(s.get(0).getOrange()) {
+							wallP1 = w.getNum();
+							if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+								p1Horizontal = true;
+								p1Direction = 0;
+								if(s.get(0).getX()-30 < w.getTopX()) p1x = w.getTopX();
+								else if(s.get(0).getX()+30 > w.getBx()) p1x = w.getBx()-60;
+								else p1x = (int) s.get(0).getX()-30;
+								p1y = (int) w.getTopY()-8;
+
+							}
+							else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+								p1Horizontal = true;
+								p1Direction = 1;
+								if(s.get(0).getX()-30 < w.getTopX()) p1x = w.getTopX();
+								else if(s.get(0).getX()+30 > w.getBx()) p1x = w.getBx()-60;
+								else p1x = (int) s.get(0).getX()-30;
+								p1y = (int) w.getBy()-8;
+							}
+							else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
+								p1Horizontal = false;
+								p1Direction = 2;
+								p1x = (int) w.getBx()-30;
+								if(s.get(0).getY()-30 < w.getTopY()) p1y = w.getTopY();
+								else if(s.get(0).getY()+25 > w.getBy()) p1y = w.getBy()-55;
+								else p1y = (int) s.get(0).getY()-30;
+							}
+							else if(checkRight((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
+								p1Horizontal = false;
+								p1Direction = 3;
+								System.out.println(s.get(0).getY());
+								System.out.println(w.getBy());
+								p1x = (int) w.getTopX()-30;
+								if(s.get(0).getY() -30 < w.getTopY()) p1y = w.getTopY();
+								else if(s.get(0).getY()+25 > w.getBy()) p1y = w.getBy()-55;
+								else p1y = (int) s.get(0).getY()-30;
+							}
+							if(s.size() != 0) s.remove(0);
+
+
+						}
+						else {
+							wallP2 = w.getNum();
+							if(checkTop((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+								p2Horizontal = true;
+								p2Direction = 0;
+								if(s.get(0).getX()-30 < w.getTopX()) p2x = w.getTopX();
+								else if(s.get(0).getX()+30 > w.getBx()) p2x = w.getBx()-60;
+								else p2x = (int) s.get(0).getX()-30;
+								p2y = (int) w.getTopY()-8;
+
+							}
+							else if(checkBottom((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)) {
+								p2Horizontal = true;
+								p2Direction = 1;
+								if(s.get(0).getX()-30 < w.getTopX()) p2x = w.getTopX();
+								else if(s.get(0).getX()+30 > w.getBx()) p2x = w.getBx()-60;
+								else p2x = (int) s.get(0).getX()-30;
+								p2y = (int) w.getBy()-5;
+							}
+							else if(checkLeft((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
+								p2Horizontal = false;
+								p2Direction = 2;
+								p2x = (int) w.getBx();
+								p2y = (int) (s.get(0).getY());
+								if(s.get(0).getY()-30 < w.getTopY()) p2y = w.getTopY();
+								else if(s.get(0).getY()+25 > w.getBy()-5) p2y = w.getBy()-55;
+								else p2y = (int) s.get(0).getY()-30;
+							}
+							else if(checkRight((int)s.get(0).getX(), (int)s.get(0).getY(), (int)s.get(0).getX(), (int)s.get(0).getY(), w)){
+								p2Horizontal = false;
+								p2Direction = 3;
+								p2x = (int) w.getTopX();
+								if(s.get(0).getY()-30 < w.getTopY()) p2y = w.getTopY();
+								else if(s.get(0).getY()+25 > w.getBy()) p2y = w.getBy()-55;
+								else p2y = (int) s.get(0).getY()-30;
+							}
+							if(s.size() !=0) s.remove(0);
+						}
+					}
+				}
+				w.setPrePortal(true);
+			}
+			else {
+				w.setPrePortal(false);
+				s.get(0).paint(g);
+			}
+		}
+	}
 	public void teleportPlayer(Portal p1, Portal p2) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
-			if(p1Direction == 3 && p.getX()+35>p1x&&p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 && p.getX()-35<p1x&&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
-				if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
-					if(p2Direction == 0) { // top, bottom, left, right
-						p.setVX(-10);
-						groundY=walls.get(wallP2).getTopY()-40;
-						groundW = walls.get(wallP2);
-						p.setX(p2x);
-						p.setY(p2y - 50);
+			if(p1Direction == 3 && p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 && p.getX()-35<p1x&&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
+				if((p.getX()+35>p1x)||(pickUp&&p.getX()+50>p1x)) {
+					if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
+						if(p2Direction == 0) { // top, bottom, left, right
+							p.setVY(-10);
+							groundY=walls.get(wallP2).getTopY()-40;
+							groundW = walls.get(wallP2);
+							p.setX(p2x);
+							p.setY(p2y - 50);
+						}
+						else if(p2Direction == 1) {
+							p.setX(p2x);
+							p.setY(p2y+20);
+						}
+						if(p2Direction == 2) {
+							p.setVX(5);
+							p.setX(p2x+20);
+							p.setY(p2y);
+						}
+						else if(p2Direction == 3) {
+							p.setVX(-5);
+							p.setX(p2x - 30);
+							p.setY(p2y);
+						}
+						justTele=true;
+						groundW=null;
+						p.setGround(false);
 					}
-					else if(p2Direction == 1) {
-						p.setX(p2x);
-						p.setY(p2y+20);
-					}
-					if(p2Direction == 2) {
-						p.setX(p2x+20);
-						p.setY(p2y);
-						p.setVX(5);
-					}
-					else if(p2Direction == 3) {
-						p.setX(p2x - 30);
-						p.setY(p2y);
-						p.setVX(-5);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
 				}
-
 			}
 		}
 		else {
@@ -645,14 +512,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setY(p2y+20);
 					}
 					if(p2Direction == 2) {
+						p.setVX(5);p.setVY(0);
 						p.setX(p2x+20);
 						p.setY(p2y);
-						p.setVX(5);p.setVY(0);
 					}
 					else if(p2Direction == 3) {
+						p.setVX(-5);p.setVY(0);
 						p.setX(p2x - 30);
 						p.setY(p2y);
-						p.setVX(-5);p.setVY(0);
 					}
 					justTele=true;
 					groundW=null;
@@ -661,35 +528,37 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p2Direction == 3 && p.getX()+50>p2x&&p.getVX()>0 && !(p.getX()> p2x)|| p2Direction == 2 && p.getX()-10<p2x&&p.getVX()<0 && !(p.getX()< p2x)) { //blue portal on right || left wall
-				if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
-					if(p1Direction == 0) { // top, bottom, left, right
-						p.setVY(-10);
-						groundY=walls.get(wallP1).getTopY()-40;
-						groundW = walls.get(wallP1);
-						p.setX(p1x);
-						p.setY(p1y - 50);
+			if(p2Direction == 3 && p.getVX()>0 && !(p.getX()> p2x)|| (p2Direction == 2 && p.getX()-35<p2x&&p.getVX()<0 && !(p.getX()< p2x))) { //blue portal on right || left wall
+				if((p.getX()+50>p2x)||(pickUp&&p.getX()+80>p2x)) {
+					if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
+						if(p1Direction == 0) { // top, bottom, left, right
+							p.setVY(-10);
+							groundY=walls.get(wallP1).getTopY()-40;
+							groundW = walls.get(wallP1);
+							p.setX(p1x);
+							p.setY(p1y - 50);
 
-					}
-					else if(p1Direction == 1) {
-						p.setX(p1x);
-						p.setY(p1y+20);
-					}
-					if(p1Direction == 2) {
-						p.setX(p1x + 20);
-						p.setY(p1y);
-						p.setVX(5);p.setVY(0);
-					}
-					else if(p1Direction == 3) {
-						p.setX(p1x - 30);
-						p.setY(p1y);
-						p.setVX(-5);p.setVY(0);
-					}
-					justTele=true;
-					groundW=null;
-					p.setGround(false);
-				}	
+						}
+						else if(p1Direction == 1) {
+							p.setX(p1x);
+							p.setY(p1y+20);
+						}
+						if(p1Direction == 2) {
+							p.setVX(5);p.setVY(0);
+							p.setX(p1x + 20);
+							p.setY(p1y);
+						}
+						else if(p1Direction == 3) {
+							p.setVX(-5);p.setVY(0);
+							p.setX(p1x - 30);
+							p.setY(p1y);
+						}
+						justTele=true;
+						groundW=null;
+						p.setGround(false);
+					}	
 
+				}
 			}
 
 		}
@@ -709,16 +578,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						p.setY(p1y+20);
 					}
 					if(p1Direction == 2) {
+						p.setVX(5);p.setVY(0);
 						p.setX(p1x + 20);
 						p.setY(p1y);
-						p.setVX(5);p.setVY(0);
 						groundW=null;
 						p.setGround(false);
 					}
 					else if(p1Direction == 3) {
+						p.setVX(-5);p.setVY(0);
 						p.setX(p1x - 30);
 						p.setY(p1y);
-						p.setVX(-5);p.setVY(0);
 						groundW=null;
 						p.setGround(false);
 					}
@@ -734,7 +603,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		//update the player's location and status based on a certain wall
 		if(checkLeft(TopLeftX, TopLeftY, BotRightX, BotRightY, w)) {//wall on the left
-			p.setX(w.getBx());
+			if(pickUp&&p.getIsLeft()) {
+				p.setX(w.getBx()+20);
+			}
+			else {
+				p.setX(w.getBx());
+			}
 			wallLeft=true; holdLeft=false;holdRight=false;
 
 			return;
@@ -967,7 +841,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	private boolean closePC(Player p, Cube c1) {
 		// TODO Auto-generated method stub
-		if(p.getX()-40<=c1.getX() && p.getX()+50>=c1.getX()) {
+		if(p.getX()-20<=c1.getX() && p.getX()+50>=c1.getX()) {
 			if(p.getY()-40<=c1.getY() && p.getY()+30>=c1.getY()) {
 				return true;
 			}
@@ -1006,8 +880,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		c.setX(e.getX());
 		c.setY(e.getY());
 	}
-
-
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {

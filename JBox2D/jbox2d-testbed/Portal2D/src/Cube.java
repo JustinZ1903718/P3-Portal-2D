@@ -67,6 +67,9 @@ public class Cube {
 		
 
 	}
+	public void addX() {
+		x+=vx;
+	}
 	private void update() {
 		tx.setToTranslation(x, y);
 		tx.scale(0.4, 0.4);

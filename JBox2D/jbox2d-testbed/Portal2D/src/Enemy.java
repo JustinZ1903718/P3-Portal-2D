@@ -53,9 +53,13 @@ public class Enemy {
 	public boolean getDead() {
 		return dead;
 	}
-	public void setDead() {
-		dead=true;
-		img = getImage("BigManEnemyDead.gif");
+	public void setDead(boolean d) {
+		dead=d;
+		if(dead)
+			img = getImage("BigManEnemyDead.gif");
+		else {
+			img = getImage("BigManEnemy.gif");
+		}
 	}
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
