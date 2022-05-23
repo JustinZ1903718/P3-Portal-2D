@@ -258,9 +258,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if((p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()-10> p1x))|| (p1Direction == 2 && c1.getX()-40<p1x&&c1.getVx()<0 &&c1.getX()+10> p1x)) { //orange portal on right wall || portal on left wall
 				if(Math.abs(c1.getY()-15-p1y)<50&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
-						c1.setVx(-10);
+						c1.setVx(-20);
 						c1.setX(p2x+20);
-						c1.setY(p2y - 50);
+						c1.setY(p2y - 20);
 					}
 					else if(p2Direction == 1) {
 						c1.setX(p2x+20);
@@ -289,7 +289,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 						}
 						c1.setX(p2x+20);
-						c1.setY(p2y - 50);
+						c1.setY(p2y - 20);
 					}
 					else if(p2Direction == 1) {
 						c1.setX(p2x+20);
@@ -313,9 +313,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if(p2Direction == 3 && c1.getX()+25>p2x&&c1.getVx()>0 && !(c1.getX()> p2x)|| p2Direction == 2 && c1.getX()-25<p2x&&c1.getVx()<0 && !(c1.getX()< p2x)) { //blue portal on right || left wall
 				if(Math.abs(c1.getY()-15-p2y)<50&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
-						c1.setVy(-10);
+						c1.setVy(-20);
 						c1.setX(p1x+20);
-						c1.setY(p1y - 50);
+						c1.setY(p1y - 20);
 
 					}
 					else if(p1Direction == 1) {
@@ -346,7 +346,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 							c1.setVy(-1*c1.getVy());
 						}
 						c1.setX(p1x+20);
-						c1.setY(p1y - 50);
+						c1.setY(p1y - 20);
 
 					}
 					else if(p1Direction == 1) {

@@ -66,10 +66,15 @@ public class Wall{
 		Graphics2D g2 = (Graphics2D) g;
 
 		//call update to update the actualy picture location
-		Color c=new Color(180, 180, 180);
+		
+		Color c=new Color(120, 120, 120);
+		if(portal) {
+			c=new Color(180, 180, 180);
+		}
 		g2.setColor(c);
-		if(exist)
-		g2.fillRect(topX, topY, bx-topX, by-topY);
+		if(exist) {
+			g2.fillRect(topX, topY, bx-topX, by-topY);
+		}
 
 
 
