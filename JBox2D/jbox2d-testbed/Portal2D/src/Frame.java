@@ -61,6 +61,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Enemy e3=new Enemy(700, 350, 500);
 	Crosshair c = new Crosshair();
 	Cube c1=new Cube(350, 80);
+	Goal go=new Goal(750, 110, false);
 
 	ArrayList<Wall> walls=new ArrayList<>(); {
 		walls.add(new Wall(200, 400, 1000, 500, true, 0));
@@ -76,12 +77,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		b.paint(g);
+		go.paint(g);
 		if(b.getPressed()) {
-			walls.get(b.getWallIndex()).setExist(false);	
+			walls.get(b.getWallIndex()).setExist(false);
+			go.setOpen(true);
 		}
 		else {
 			walls.get(b.getWallIndex()).setExist(true);	
+			go.setOpen(false);
 		}
+		if(go.getOpen() && closePG(p, go)) {
+			System.out.println("joey poggies");
+		}
+
 		for(Wall w: walls) {
 			w.paint(g);
 		}
@@ -247,7 +255,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public void teleportCube(Portal p1, Portal p2) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
-			if(p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()> p1x)|| p1Direction == 2 && c1.getX()-15<p1x&&c1.getVx()<0 && !(c1.getX()< p1x)) { //orange portal on right wall || portal on left wall
+			if((p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()-10> p1x))|| (p1Direction == 2 && c1.getX()-40<p1x&&c1.getVx()<0 &&c1.getX()+10> p1x)) { //orange portal on right wall || portal on left wall
 				if(Math.abs(c1.getY()-15-p1y)<50&&p2x!=9001) {
 					if(p2Direction == 0) { // top, bottom, left, right
 						c1.setVx(-10);
@@ -302,7 +310,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p2Direction == 3 && c1.getX()+25>p2x&&c1.getVx()>0 && !(c1.getX()> p2x)|| p2Direction == 2 && c1.getX()-10<p2x&&c1.getVx()<0 && !(c1.getX()< p2x)) { //blue portal on right || left wall
+			if(p2Direction == 3 && c1.getX()+25>p2x&&c1.getVx()>0 && !(c1.getX()> p2x)|| p2Direction == 2 && c1.getX()-25<p2x&&c1.getVx()<0 && !(c1.getX()< p2x)) { //blue portal on right || left wall
 				if(Math.abs(c1.getY()-15-p2y)<50&&p1x!=9001) {
 					if(p1Direction == 0) { // top, bottom, left, right
 						c1.setVy(-10);
@@ -465,8 +473,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public void teleportPlayer(Portal p1, Portal p2) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
-			if(p1Direction == 3 && p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 && p.getX()-35<p1x&&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
-				if((p.getX()+35>p1x)||(pickUp&&p.getX()+50>p1x)) {
+			if(p1Direction == 3 && p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 &&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
+				if((!pickUp&&p.getVX()>0&&p.getX()+35>p1x)||(!pickUp&&p.getVX()<0&&p.getX()-40<p1x)||(pickUp&&p.getVX()>0&&p.getX()+50>p1x)||(pickUp&&p.getVX()<0&&p.getX()-60<p1x)) {
 					if(Math.abs(p.getY()-15-p1y)<50&&!justTele&&p2x!=9001) {
 						if(p2Direction == 0) { // top, bottom, left, right
 							p.setVY(-10);
@@ -528,8 +536,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		if(!p2.getHorizontal()) {
-			if(p2Direction == 3 && p.getVX()>0 && !(p.getX()> p2x)|| (p2Direction == 2 && p.getX()-35<p2x&&p.getVX()<0 && !(p.getX()< p2x))) { //blue portal on right || left wall
-				if((p.getX()+50>p2x)||(pickUp&&p.getX()+80>p2x)) {
+			if(p2Direction == 3 && p.getVX()>0 && p.getX()-5<= p2x|| (p2Direction == 2 && p.getVX()<0 && !(p.getX()< p2x))) { //blue portal on right || left wall
+				if((!pickUp&&p.getVX()>0&&p.getX()+50>p2x)||(!pickUp&&p.getVX()<0&&p.getX()-12<p2x)||(pickUp&&p.getVX()>0&&p.getX()+80>p2x)||(pickUp&&p.getVX()<0&&p.getX()-30<p2x)) {
 					if(Math.abs(p.getY()-15-p2y)<50&&!justTele&&p1x!=9001) {
 						if(p1Direction == 0) { // top, bottom, left, right
 							p.setVY(-10);
@@ -547,6 +555,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 							p.setVX(5);p.setVY(0);
 							p.setX(p1x + 20);
 							p.setY(p1y);
+							
 						}
 						else if(p1Direction == 3) {
 							p.setVX(-5);p.setVY(0);
@@ -722,6 +731,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		p.setDead(false);
 		p.setX(startX);
 		p.setY(startY);
+		if(pickUp) {
+			pickUp=!pickUp;
+		}
 		c.setX(cStartX);
 		e1.setDead(false);
 		e2.setDead(false);
@@ -873,7 +885,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		return false;
 	}
-
+	private boolean closePG(Player p, Goal c1) {
+		// TODO Auto-generated method stub
+		if(p.getX()-40<=c1.getX() && p.getX()+50>=c1.getX()) {
+			if(p.getY()-50<=c1.getY() && p.getY()+30>=c1.getY()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
