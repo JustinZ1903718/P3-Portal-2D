@@ -122,7 +122,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				c1.addX();
 			}
 		}
-
+//pls wonk
 		Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
 		Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
 		p1.paint(g);
