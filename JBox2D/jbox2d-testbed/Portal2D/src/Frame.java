@@ -1,5 +1,5 @@
 package Portal2D.src;
-//the virgin islands vs Chad
+//the virgin islands vs Cha
 import java.awt.Color;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
