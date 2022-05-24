@@ -24,8 +24,8 @@ public class Player {
 	private boolean ground;
 	private boolean dead;
 	public Player(int x, int y) {
-		this.x = 100;
-		this.y = 100;
+		this.x = x;
+		this.y = y;
 		ground=false;
 		img = getImage("joey.gif"); 
 		//load the image for Tree
