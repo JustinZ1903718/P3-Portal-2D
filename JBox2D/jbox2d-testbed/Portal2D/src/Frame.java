@@ -1,5 +1,5 @@
 package Portal2D.src;
-//it's about drive
+//it's about driv
 import java.awt.Color;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
