@@ -58,7 +58,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int level = 0;
 
 	Crosshair c = new Crosshair();
-	Goal go = new Goal(1000, 400, false);
+	Goal go = new Goal(1000, 250, false);
 	
 	ArrayList<Enemy> enemies = new ArrayList<>();{
 		/*
@@ -67,6 +67,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		enemies.add(new Enemy(500, 350, 500));
 		*/
 		
+		/*
 		enemies.add(new Enemy(400, 450, 500));
 		enemies.add(new Enemy(450, 450, 500));
 		enemies.add(new Enemy(500, 450, 500));
@@ -75,6 +76,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		enemies.add(new Enemy(650, 450, 500));
 		enemies.add(new Enemy(700, 450, 500));
 		enemies.add(new Enemy(750, 450, 500));
+		*/
+		
+		enemies.add(new Enemy(380, 520, 500));
+		enemies.add(new Enemy(330, 520, 500));
 	}
 	ArrayList<Wall> walls=new ArrayList<>(); {
 		walls.add(new Wall(0, 0, 2000, 10, false, 0));
@@ -86,12 +91,28 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		walls.add(new Wall(500, 200, 1000, 325, true, 5));
 		walls.add(new Wall(600, 0, 650, 400, false, 6));
 		*/
+		
+		/*
 		walls.add(new Wall(0, 900, 200, 1000, true, 3));
 		walls.add(new Wall(200, 750, 400, 850, true, 4));
 		walls.add(new Wall(100, 540, 200, 580, false, 5));
 		walls.add(new Wall(400, 500, 1500, 550, true, 6));
 		walls.add(new Wall(800, 200, 820, 500, false, 7));
 		walls.add(new Wall(0, 300, 220, 400, true, 8));
+		*/
+		
+		walls.add(new Wall(0, 900, 400, 1000, true, 3));
+		walls.add(new Wall(400, 750, 1000, 850, true, 4));
+		walls.add(new Wall(800, 600, 950, 650, true, 5));
+		walls.add(new Wall(0, 570, 450, 650, true, 6));
+		walls.add(new Wall(420, 275, 450, 535, false, 7));
+		walls.add(new Wall(0, 100, 450, 250, true, 8));
+		walls.add(new Wall(450, 400, 1200, 450, false, 9));
+		walls.add(new Wall(0, 300, 150, 350, false, 10));
+		walls.add(new Wall(450, 350, 1200, 400, true, 9));
+	
+		
+	
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
