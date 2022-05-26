@@ -103,18 +103,21 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 			}
 			if(level==0) {
-				Font font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 180);
+				Font font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 160);
 				g.setColor(Color.black);
 				g.setFont(font);
-				g.drawString("Portal-2D ED", 220, 240);
+				g.drawString("Portal-2D ED", 250, 240);
 				font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 40);
 				g.setFont(font);
 				g.drawString("Created By: Adam Levine, Justin Zhang, Pranav Eluri", 270, 750);
 				g.drawString("New Game", 270, 450);
-				g.drawString("Level Select/Instructions", 1000, 450);
+				g.drawString("Level Select/Instructions", 800, 450);
 				
 				if(p.getX()<300) {
-					level++;
+					level=4;
+					groundY=170;
+					p.setY(groundY);
+					p.reset();
 					updateLevel(walls, enemies, c1List, go, p, buttons, level);
 				}
 			}
@@ -234,7 +237,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if(justTele) {
 				justTele=false;
 			}
-
+			System.out.println(p.getY());
 			prevprevX = prevX;
 			prevprevY = prevY;
 			prevX=p.getX();
@@ -282,7 +285,22 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			walls.add(new Wall(450, 400, 1200, 450, false, 9, false));
 			walls.add(new Wall(0, 300, 100, 350, false, 10, false));
 			walls.add(new Wall(450, 350, 1200, 400, true, 11, false));
-
+		}
+		
+		if(level == 4) {
+			walls.add(new Wall(0, 900, 350, 1000, true, 3, false));
+			walls.add(new Wall(500, 700, 800, 800, true, 4, false));
+			walls.add(new Wall(1000, 700, 1500, 800, true, 5, false));
+			walls.add(new Wall(650, 520, 1500, 570, false, 6, false));
+			walls.add(new Wall(650, 570, 1500, 620, true, 7, false));
+			
+			walls.add(new Wall(750, 450, 850, 490, false, 8, false));
+			walls.add(new Wall(850, 390, 950, 430, false, 9, false));
+			walls.add(new Wall(950, 320, 1050, 360, false, 10, true));
+			walls.add(new Wall(1100, 320, 1300, 360, false, 11, false));
+			walls.add(new Wall(1300, 320, 1500, 360, true, 12, false));
+			walls.add(new Wall(1300, 300, 1330, 320, false, 12, false));
+			
 		}
 
 	}
@@ -311,6 +329,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			enemies.add(new Enemy(380, 520, 500));
 			enemies.add(new Enemy(330, 520, 500));
 		}
+		if(level==4) {
+			enemies.add(new Enemy(1200, 650, 500));
+			enemies.add(new Enemy(1250, 650, 500));
+		}
 	}
 	public void updateCube(ArrayList<Cube> c, int level) {
 		if(level==1) {
@@ -322,6 +344,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		if(level==3) {
 			c.set(0, new Cube(150, 420));
+		}
+		if(level==4) {
+			c.set(0, new Cube(675, 480));
 		}
 	}
 	public void updateGoal(Goal go, int level) {
@@ -338,6 +363,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			go.setX(1000);
 			go.setY(250);
 		}
+		if(level==4) {
+			go.setX(1400);
+			go.setY(180);
+		}
 	}
 	public void updatePlayer(Player p, int level) {
 		if(level==1) {
@@ -345,8 +374,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			p.setStartX(69);
 			p.setY(p.getStartY());
 			p.setX(p.getStartX());
-			System.out.println("Joey");
-			System.out.println(p.getY());
 		}
 		if(level == 2) {
 			p.setStartY(869);
@@ -354,6 +381,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			p.setX(p.getStartX());
 		}
 		if(level == 3) {
+			p.setStartY(869);
+			p.setY(p.getStartY());
+			p.setX(p.getStartX());
+		}
+		if(level==4) {
 			p.setStartY(869);
 			p.setY(p.getStartY());
 			p.setX(p.getStartX());
@@ -368,7 +400,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		if(level == 2) {
 			buttons.add(new Button(40, 280, 7));
-
+		}
+		if(level==3) {
+			buttons.add(new Button(40, 280, 7));
+		}
+		if(level==4) {
+			buttons.add(new Button(1350, 680, 10));
 		}
 	}
 	public void updateCubeLoc(Wall w, Cube c1) {
@@ -1023,8 +1060,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	private boolean closePG(Player p, Goal g1) {
 		// TODO Auto-generated method stub
-		if(p.getX()-40<=g1.getX() && p.getX()+50>=g1.getX()) {
-			if(p.getY()-50<=g1.getY() && p.getY()+30>=g1.getY()) {
+		if(p.getX()-50<=g1.getX() && p.getX()+30>=g1.getX()) {
+			if(p.getY()-80<=g1.getY() && p.getY()+20>=g1.getY()) {
 				return true;
 			}
 		}
