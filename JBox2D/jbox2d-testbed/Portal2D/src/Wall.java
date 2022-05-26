@@ -20,7 +20,8 @@ public class Wall{
 	private boolean portal;
 	private int num;
 	private boolean exist;
-	public Wall(int tox, int ty, int x, int y, boolean portal, int num) {
+	private boolean button;
+	public Wall(int tox, int ty, int x, int y, boolean portal, int num, boolean button) {
 		topX=tox;
 		topY=ty;
 		bx=x;
@@ -29,6 +30,7 @@ public class Wall{
 		prePortal = false;
 		this.num = num;
 		exist=true;
+		this.button = button;
 	}
 
 	public int getTopX() {
@@ -66,15 +68,22 @@ public class Wall{
 		Graphics2D g2 = (Graphics2D) g;
 
 		//call update to update the actualy picture location
-		
-		Color c=new Color(120, 120, 120);
 		if(portal) {
-			c=new Color(180, 180, 180);
+			Color c=new Color(180, 180, 180);
+			g2.setColor(c);
 		}
-		g2.setColor(c);
-		if(exist) {
+		else if(button) {
+			Color c = new Color(255, 100, 255);
+			g2.setColor(c);
+		}
+		else {
+			Color c = new Color(100, 100, 100);
+			g2.setColor(c);
+		}
+
+		//call update to update the actually picture location
+		if(exist)
 			g2.fillRect(topX, topY, bx-topX, by-topY);
-		}
 
 
 

@@ -68,17 +68,6 @@ public class Enemy {
 		//call update to update the actualy picture location
 
 		g2.drawImage(img, tx, null);
-		/*
-		if(!dead) {
-			g2.setColor(Color.red);
-			g2.setStroke(new BasicStroke(4));
-			g2.drawLine(x+20, y+20, (int) (x+20-length*Math.cos(angle)), (int) (y+20-length*Math.sin(angle)));
-			angle+=inc;
-			if(angle<0||angle>Math.PI) {
-				inc=-1*inc;
-			}
-		}
-		*/
 	}
 	/* update the picture variable location */
 

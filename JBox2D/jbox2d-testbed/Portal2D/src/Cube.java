@@ -18,9 +18,13 @@ public class Cube {
 	private int vx;
 	private int vy;
 	private int gravity=1;
+	private int startX;
+	private int startY;
 	public Cube(int x, int y) {
 		this.x=x;
 		this.y=y;
+		this.startX = x;
+		this.startY = y;
 		img = getImage("Cube.gif"); 
 		//load the image for Tree
 		tx = AffineTransform.getTranslateInstance(x, y );
@@ -48,9 +52,31 @@ public class Cube {
  	public int getVy() {
 		return vy;
 	}
+ 	
 	public void setVy(int vy) {
 		this.vy = vy;
 	}
+	public void addX() {
+		x+=vx;
+	}
+	public int getStartX() {
+		return startX;
+	}
+	public int getStartY() {
+		return startY;
+	}
+	public void setStartX(int startX) {
+		this.startX = startX;
+	}
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
+	public void reset() {
+		x = startX;
+		y = startY;
+		vy = 0;
+	}
+	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -66,9 +92,6 @@ public class Cube {
 		
 		
 
-	}
-	public void addX() {
-		x+=vx;
 	}
 	private void update() {
 		tx.setToTranslation(x, y);

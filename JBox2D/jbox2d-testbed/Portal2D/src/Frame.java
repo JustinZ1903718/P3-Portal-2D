@@ -1,5 +1,5 @@
 package Portal2D.src;
-//it's about dr
+//fo
 import java.awt.Color;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
@@ -20,16 +20,13 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
 
-	Player p=new Player(69, 869);
-	Button b = new Button(40, 280, 7);
-	private int p1x=9001;
-	private int p1y=9001;
-	private int p2x=9001;
-	private int p2y=9001;
-	private int startX =69 ;
-	private int startY = 869;
-	private int cStartX = 150;
-	private int cStartY = 420;
+	Player p=new Player(700, 450);
+	private int p1x=250;
+	private int p1y=450;
+	private int p2x=1200;
+	private int p2y=450;
+	private int startX = 200;
+	private int startY = 450;
 
 
 	private int prevX;
@@ -56,240 +53,338 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int wallP1 = -1;
 	private int wallP2 = -1;
 	private int level = 0;
-
+	
 	Crosshair c = new Crosshair();
-	Goal go = new Goal(1000, 250, false);
-	
-	ArrayList<Enemy> enemies = new ArrayList<>();{
-		/*
-		enemies.add(new Enemy(700, 150, 500));
-		enemies.add(new Enemy(900, 150, 500));
-		enemies.add(new Enemy(500, 350, 500));
-		*/
-		
-		/*
-		enemies.add(new Enemy(400, 450, 500));
-		enemies.add(new Enemy(450, 450, 500));
-		enemies.add(new Enemy(500, 450, 500));
-		enemies.add(new Enemy(550, 450, 500));
-		enemies.add(new Enemy(600, 450, 500));
-		enemies.add(new Enemy(650, 450, 500));
-		enemies.add(new Enemy(700, 450, 500));
-		enemies.add(new Enemy(750, 450, 500));
-		*/
-		
-		enemies.add(new Enemy(380, 520, 500));
-		enemies.add(new Enemy(330, 520, 500));
+	Goal go = new Goal(1750, 110, false);
+	ArrayList<Button> buttons = new ArrayList<>();{
+		buttons.add(new Button(450, 1380, 3));
 	}
+	ArrayList<Enemy> enemies = new ArrayList<>();{}
+	
 	ArrayList<Wall> walls=new ArrayList<>(); {
-		walls.add(new Wall(0, 0, 2000, 10, false, 0));
-		walls.add(new Wall(0, 0, 10, 2000, false, 1));
-		walls.add(new Wall(1480, 0, 1500, 1000, false, 2));
+		walls.add(new Wall(0, 0, 2000, 10, false, 0, false));
+		walls.add(new Wall(0, 0, 10, 2000, false, 1, false));
+		walls.add(new Wall(1480, 0, 1500, 1000, false, 2, false));
 		
-		/*walls.add(new Wall(200, 400, 1000, 500, true, 3));
-		walls.add(new Wall(0, 200, 250, 400, true, 4));
-		walls.add(new Wall(500, 200, 1000, 325, true, 5));
-		walls.add(new Wall(600, 0, 650, 400, false, 6));
-		*/
-		
-		/*
-		walls.add(new Wall(0, 900, 200, 1000, true, 3));
-		walls.add(new Wall(200, 750, 400, 850, true, 4));
-		walls.add(new Wall(100, 540, 200, 580, false, 5));
-		walls.add(new Wall(400, 500, 1500, 550, true, 6));
-		walls.add(new Wall(800, 200, 820, 500, false, 7));
-		walls.add(new Wall(0, 300, 220, 400, true, 8));
-		*/
-		
-		walls.add(new Wall(0, 900, 400, 1000, true, 3));
-		walls.add(new Wall(400, 750, 1000, 850, true, 4));
-		walls.add(new Wall(800, 600, 950, 650, true, 5));
-		walls.add(new Wall(0, 570, 450, 650, true, 6));
-		walls.add(new Wall(420, 275, 450, 535, false, 7));
-		walls.add(new Wall(0, 100, 450, 250, true, 8));
-		walls.add(new Wall(450, 400, 1200, 450, false, 9));
-		walls.add(new Wall(0, 300, 150, 350, false, 10));
-		walls.add(new Wall(450, 350, 1200, 400, true, 9));
-	
-		
-	
+		walls.add(new Wall(200, 0, 250, 2000, true, 3, false));
+		walls.add(new Wall(1250, 0, 1300, 1000, true, 4, false));
+		walls.add(new Wall(0, 500, 2000, 600, true, 4, false));
 	}
 	ArrayList<Laser> lasers=new ArrayList<>();
 	ArrayList<Shot> s=new ArrayList<>();
-	ArrayList<Cube> c1 = new ArrayList<>();{
-		c1.add(new Cube(150, 420));
+	ArrayList<Cube> c1List = new ArrayList<>();{
+		c1List.add(new Cube(11350, 80));
 	}
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		b.paint(g);
 		go.paint(g);
-		if(b.getPressed()) {
-			walls.get(b.getWallIndex()).setExist(false);
-			go.setOpen(true);
-		}
-		else {
-			walls.get(b.getWallIndex()).setExist(true);	
-			go.setOpen(false);
-		}
-		if(go.getOpen() && closePG(p, go)) {
-			System.out.println("joey poggies");
-			level++;
-			//updateWalls(walls, level);
-			//updateEnemy(enemies, level);
-		}
-		for(Wall w: walls) {
-			w.paint(g);
-		}
-		for(Laser i: lasers) {
-			if(!i.getPaint()) {
-				lasers.remove(i);
-			}
-			i.paint(g);
-			if(pickUp&&hitL(c1.get(0).getX()-5, c1.get(0).getY()-15, c1.get(0).getX()+30, c1.get(0).getY()+40, i)) {
-				lasers.remove(i);
-			}
+		for(Cube c1: c1List) {
+			
+			for(Button b: buttons) {
+				b.paint(g);
+				if(b.getPressed()) {
+					walls.get(b.getWallIndex()).setExist(false);
+					go.setOpen(true);
+				}
+				else {
+					if(walls.get(b.getWallIndex()) != null) {
+						walls.get(b.getWallIndex()).setExist(true);	
+						go.setOpen(false);
+					}
+					
+				}
+				if(closePB(p, b) || closeBC(b, c1)) {
+					b.setPressed(true);
+				}
+				else {
+					b.setPressed(false);
+				}
 
-			for(Wall w: walls) {
-				if(w.getExist()&&hitL(w.getTopX(), w.getTopY(), w.getBx(), w.getBy(), i)) {
-					lasers.remove(i);
+			}
+			if(level==0) {
+				Font font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 180);
+				g.setColor(Color.black);
+				g.setFont(font);
+				g.drawString("Portal-2D ED", 220, 240);
+				font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 40);
+				g.setFont(font);
+				g.drawString("Created By: Adam Levine, Justin Zhang, Pranav Eluri", 270, 750);
+				g.drawString("New Game", 270, 450);
+				g.drawString("Level Select/Instructions", 1000, 450);
+				
+				if(p.getX()<300) {
+					level++;
+					updateLevel(walls, enemies, c1List, go, p, buttons, level);
 				}
 			}
-			if(hitL(p.getX()+5, p.getY(), p.getX()+32, p.getY()+40, i)) {
+			if(go.getOpen() && closePG(p, go)) {
+				level++;
+				updateLevel(walls, enemies, c1List, go, p, buttons, level);
+				
+			}
+			
+			for(Wall w: walls) {
+				w.paint(g);
+			}
+			
+			for(Laser i: lasers) {
+				if(!i.getPaint()) {
+					lasers.remove(i);
+				}
+				i.paint(g);
+				if(pickUp&&hitL(c1.getX()-5, c1.getY()-15, c1.getX()+30, c1.getY()+40, i)) {
+					lasers.remove(i);
+				}
+
+				for(Wall w: walls) {
+					if(w.getExist()&&hitL(w.getTopX(), w.getTopY(), w.getBx(), w.getBy(), i)) {
+						lasers.remove(i);
+					}
+				}
+				if(hitL(p.getX()+5, p.getY(), p.getX()+32, p.getY()+40, i)) {
+					resetLevel();
+				}
+
+
+			}
+			if(closePC(p, c1)) {
+				if(p.getVX() > 0 && p.getX() < c1.getX()) {
+					c1.setVx(p.getVX());
+					c1.addX();
+				}
+				if(p.getVX() < 0&&p.getX()>c1.getX()) {
+					c1.setVx(p.getVX());
+					c1.addX();
+				}
+			}
+
+			Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
+			Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
+			p1.paint(g);
+			p2.paint(g);
+			if(p.getY()>1000) {
 				resetLevel();
+				p.setVY(0);
+			}
+			c.paint(g);
+			for(Enemy e: enemies) {
+				e.paint(g);e.setCooldown(e.getCooldown()+1);
+				if(dist(e, p) < 200) {
+					shoot(e, p);
+				}
+				if(closeEC(e, c1)) {
+					e.setDead(true);
+				}
 			}
 
-
-		}
-		if(closePC(p, c1.get(0))) {
-			if(p.getVX() > 0 && p.getX() < c1.get(0).getX()) {
-				c1.get(0).setVx(p.getVX());
-				c1.get(0).addX();
+			if(!holdLeft&&!holdRight) {
+				p.setVX(0);
 			}
-			if(p.getVX() < 0&&p.getX()>c1.get(0).getX()) {
-				c1.get(0).setVx(p.getVX());
-				c1.get(0).addX();
-			}
-		}
-		
-		Portal p1=new Portal(p1x, p1y, true, p1Horizontal);
-		Portal p2=new Portal(p2x, p2y, false, p2Horizontal);
-		p1.paint(g);
-		p2.paint(g);
-		if(p.getY()>1000) {
-			resetLevel();
-			p.setVY(0);
-		}
-		c.paint(g);
-		for(Enemy e: enemies) {
-			e.paint(g);e.setCooldown(e.getCooldown()+1);
-			if(dist(e, p)<200) {
-				shoot(e, p);
-			}
-			if(closeEC(e, c1.get(0))) {//change idot
-				e.setDead(true);
-			}
-		}
-
-		if(closePB(p, b) || closeBC(b, c1.get(0))) {
-			b.setPressed(true);
-		}
-		else {
-			b.setPressed(false);
-		}
-		
-
-
-		
-
-		if(!holdLeft&&!holdRight) {
-			p.setVX(0);
-		}
-		if(holdRight&&!holdLeft) {
-			p.setVX(5);
-		}
-		if(!holdRight&&holdLeft) {
-			p.setVX(-5);
-		}
-		if(holdRight&&holdLeft) {
-			if(recentLeft) {
-				p.setVX(-5);
-			}
-			else {
+			if(holdRight&&!holdLeft) {
 				p.setVX(5);
 			}
-		}
-		p.paint(g);
-		if(pickUp) {
-			c1.get(0).setVy(p.getVY());
-			c1.get(0).setVx(p.getVX());
-			if(!p.getIsLeft()) {
-				c1.get(0).setX(p.getX()+50);
-				c1.get(0).setY(p.getY()+10);
+			if(!holdRight&&holdLeft) {
+				p.setVX(-5);
 			}
-			else {
-				c1.get(0).setX(p.getX()-20);
-				c1.get(0).setY(p.getY()+8);
+			if(holdRight&&holdLeft) {
+				if(recentLeft) {
+					p.setVX(-5);
+				}
+				else {
+					p.setVX(5);
+				}
 			}
-		}
-		c1.get(0).paint(g);
-
-		for(Wall w: walls) {
-			shootPortal(w, g);
-		}
-
-		if(groundW!=null&&(p.getX()+40<groundW.getTopX()||p.getX()>groundW.getBx())) {
-			p.setGround(false);p.setVY(0);
-			groundW=null;
-		}
-
-
-		teleportPlayer(p1, p2);
-		teleportCube(p1, p2, c1.get(0));
-		if(p.getGround()) {
-			if(prevY == prevprevY) {
-				p.setY(groundY);
+			
+			p.paint(g);
+			
+			if(pickUp) {
+				c1.setVy(p.getVY());
+				c1.setVx(p.getVX());
+				if(!p.getIsLeft()) {
+					c1.setX(p.getX()+50);
+					c1.setY(p.getY()+10);
+				}
+				else {
+					c1.setX(p.getX()-20);
+					c1.setY(p.getY()+8);
+				}
 			}
-			p.setVY(0);
+			c1.paint(g);
 
-		}
-		if(justTele) {
-			justTele=false;
-		}
+			for(Wall w: walls) {
+				shootPortal(w, g, c1);
+			}
 
-		prevprevX = prevX;
-		prevprevY = prevY;
-		prevX=p.getX();
-		prevY=p.getY();
+			if(groundW!=null&&(p.getX()+40<groundW.getTopX()||p.getX()>groundW.getBx())) {
+				p.setGround(false);p.setVY(0);
+				groundW=null;
+			}
+
+
+			teleportPlayer(p1, p2);
+			teleportCube(p1, p2, c1);
+			if(p.getGround()) {
+				if(prevY == prevprevY) {
+					p.setY(groundY);
+				}
+				p.setVY(0);
+
+			}
+			if(justTele) {
+				justTele=false;
+			}
+
+			prevprevX = prevX;
+			prevprevY = prevY;
+			prevX=p.getX();
+			prevY=p.getY();
+		}
+	}
+	public void updateLevel(ArrayList<Wall> w, ArrayList<Enemy> e, ArrayList<Cube> c, Goal go, Player p, ArrayList<Button> b, int level) {
+		updateCube(c1List, level);
+		updateButton(buttons, level);
+		updateEnemy(enemies, level);
+		updateGoal(go, level);
+		updateWalls(walls, level);
+		updatePlayer(p, level);
+		p1x = 9001;
+		p1y = 9001;
+		p2x = 9001;
+		p2y = 9001;
 	}
 	public void updateWalls(ArrayList<Wall> w, int level) {
-		for(int i = w.size();i>2;i--) {
+		for(int i = w.size()-1;i>2;i--) {
 			w.remove(i);
 		}
+		if(level==1) {
+			walls.add(new Wall(200, 400, 1000, 500, true, 3, false));
+			walls.add(new Wall(0, 200, 250, 400, true, 4, false));
+			walls.add(new Wall(500, 200, 1000, 325, true, 5, false));
+			walls.add(new Wall(600, 0, 650, 400, false, 6, true));
+		}
+		if(level == 2) {
+			walls.add(new Wall(0, 900, 200, 1000, true, 3, false));
+			walls.add(new Wall(200, 750, 400, 850, true, 4, false));
+			walls.add(new Wall(100, 540, 200, 580, false, 5, false));
+			walls.add(new Wall(400, 500, 1500, 550, true, 6, false));
+			walls.add(new Wall(800, 200, 820, 500, false, 7, true));
+			walls.add(new Wall(0, 300, 220, 400, true, 8, false));
+		}
+		
+		if(level==3) {
+			walls.add(new Wall(0, 900, 400, 1000, true, 3, false));
+			walls.add(new Wall(400, 750, 1000, 850, true, 4, false));
+			walls.add(new Wall(800, 600, 950, 650, true, 5, false));
+			walls.add(new Wall(0, 570, 450, 620, true, 6, false));
+			walls.add(new Wall(420, 275, 450, 535, false, 7, true));
+			walls.add(new Wall(0, 100, 450, 250, true, 8, false));
+			walls.add(new Wall(450, 400, 1200, 450, false, 9, false));
+			walls.add(new Wall(0, 300, 100, 350, false, 10, false));
+			walls.add(new Wall(450, 350, 1200, 400, true, 11, false));
+
+		}
+
 	}
 	public void updateEnemy(ArrayList<Enemy> e, int level) {
+		for(int i = e.size()-1;i>=0;i--) {
+			e.remove(i);
+		}
+		if(level==1) {
+			enemies.add(new Enemy(700, 150, 500));
+			enemies.add(new Enemy(900, 150, 500));
+			enemies.add(new Enemy(500, 350, 500));
+		}
+		if(level == 2) {
+			enemies.add(new Enemy(400, 450, 500));
+			enemies.add(new Enemy(450, 450, 500));
+			enemies.add(new Enemy(500, 450, 500));
+			enemies.add(new Enemy(550, 450, 500));
+			enemies.add(new Enemy(600, 450, 500));
+			enemies.add(new Enemy(650, 450, 500));
+			enemies.add(new Enemy(700, 450, 500));
+			enemies.add(new Enemy(750, 450, 500));
+
+		}
 		
+		if(level==3) {
+			enemies.add(new Enemy(380, 520, 500));
+			enemies.add(new Enemy(330, 520, 500));
+		}
 	}
 	public void updateCube(ArrayList<Cube> c, int level) {
+		if(level==1) {
+			c.set(0, new Cube(350, 80));
+		}
+		if(level == 2) {
+			c.set(0, new Cube(150, 420));
+		}
 		
+		if(level==3) {
+			c.set(0, new Cube(150, 420));
+		}
+	}
+	public void updateGoal(Goal go, int level) {
+		if(level==1) {
+			go.setX(750);
+			go.setY(110);
+		}
+		if(level == 2) {
+			go.setX(1000);
+			go.setY(400);
+		}
+		
+		if(level==3) {
+			go.setX(1000);
+			go.setY(250);
+		}
 	}
 	public void updatePlayer(Player p, int level) {
-		
+		if(level==1) {
+			p.setStartY(69);
+			p.setStartX(69);
+			p.setY(p.getStartY());
+			p.setX(p.getStartX());
+			System.out.println("Joey");
+			System.out.println(p.getY());
+		}
+		if(level == 2) {
+			p.setStartY(869);
+			p.setY(p.getStartY());
+			p.setX(p.getStartX());
+		}
+		if(level == 3) {
+			p.setStartY(869);
+			p.setY(p.getStartY());
+			p.setX(p.getStartX());
+		}
 	}
-	public void updateCubeLoc(Wall w) {
-		if(checkLeft(c1.get(0).getX(), c1.get(0).getY(), c1.get(0).getX()+20, c1.get(0).getY()+20, w)) {//wall on the left
-			c1.get(0).setX(w.getBx());
+	public void updateButton(ArrayList<Button> b, int level) {
+		for(int i = b.size()-1;i>=0;i--) {
+			b.remove(i);
+		}
+		if(level==1) {
+			buttons.add(new Button(450, 380, 6));
+		}
+		if(level == 2) {
+			buttons.add(new Button(40, 280, 7));
+
+		}
+	}
+	public void updateCubeLoc(Wall w, Cube c1) {
+		if(checkLeft(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the left
+			c1.setX(w.getBx());
 		}
 
-		if(checkRight(c1.get(0).getX(), c1.get(0).getY(), c1.get(0).getX()+20, c1.get(0).getY()+20, w)) {//wall on the right
-			c1.get(0).setX(w.getTopX()-20);
+		if(checkRight(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the right
+			c1.setX(w.getTopX()-20);
 
 		}
-		if(checkTop(c1.get(0).getX(), c1.get(0).getY(), c1.get(0).getX()+20, c1.get(0).getY()+20, w)) {//wall on the top
-			c1.get(0).setY(w.getTopY()-20);c1.get(0).setVy(0);
+		if(checkTop(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the top
+			c1.setY(w.getTopY()-20);c1.setVy(0);
 		}
-		if(checkBottom(c1.get(0).getX(), c1.get(0).getY(), c1.get(0).getX()+20, c1.get(0).getY()+20, w)) {//wall on the bottom
-			c1.get(0).setY(w.getBy());
+		if(checkBottom(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the bottom
+			c1.setY(w.getBy());
 		}
 	}
 	public void teleportCube(Portal p1, Portal p2, Cube c1) {
@@ -410,10 +505,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 	}
 
-
-	
-
-
 	public void teleportPlayer(Portal p1, Portal p2) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
 			if(p1Direction == 3 && p.getVX()>0 && !(p.getX()> p1x)|| p1Direction == 2 &&p.getVX()<0 && !(p.getX()< p1x)) { //orange portal on right wall || portal on left wall
@@ -498,7 +589,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 							p.setVX(5);p.setVY(0);
 							p.setX(p1x + 20);
 							p.setY(p1y);
-							
+
 						}
 						else if(p1Direction == 3) {
 							p.setVX(-5);p.setVY(0);
@@ -668,19 +759,21 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 
 	public void shootPortal(Player p, int x, int y, boolean orange) {
-		Shot s1 = new Shot(p.getX()+20,p.getY()+10, x, y, 1500, orange);
+		Shot s1 = new Shot(p.getX()+20,p.getY()+25, x, y, 1500, orange);
 		if(s.size() == 0) s.add(0, s1);
 		else s.set(0, s1);
 	}
 	public void resetLevel() {
-		p.setX(startX);
-		p.setY(startY);
+		p.setX(p.getStartX());
+		p.setY(p.getStartY());
 		if(pickUp) pickUp = !pickUp;
-		c1.get(0).setX(cStartX);
-		c1.get(0).setY(cStartY);
-		enemies.get(0).setDead(false);
-		enemies.get(1).setDead(false);
-		enemies.get(2).setDead(false);
+		for(Cube c1: c1List) {
+			if(pickUp) pickUp = false;
+			c1.reset();
+		}
+		for(Enemy e: enemies) {
+			e.setDead(false);
+		}
 		p1x = 9001;
 		p1y = 9001;
 		p2x = 9001;
@@ -688,7 +781,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		p.setVY(0);
 		if(s.get(0) != null) s.remove(0);
 	}
-	public void shootPortal(Wall w, Graphics g) {
+	public void shootPortal(Wall w, Graphics g, Cube c1) {
 		if(w.getExist()) {
 
 			if(s.size()!=0) {
@@ -795,7 +888,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 
 
-		
+
 			if(pickUp&&p.getIsLeft()) {
 				updateCollision(p.getX()-20, p.getY(), p.getX()+50, p.getY()+40, w);
 			}
@@ -805,9 +898,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			else {
 				updateCollision(p.getX(), p.getY(), p.getX()+45, p.getY()+40, w);
 			}
-			
-			
-			updateCubeLoc(w);
+
+
+			updateCubeLoc(w, c1);
 		}
 	}
 	public static void main(String[] arg) {
@@ -906,15 +999,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			p.setGround(false);
 
 		}
-		if(arg0.getKeyCode() == 82) {
+		if(arg0.getKeyCode() == 82 && p.getDead() || arg0.getKeyCode() == 82 && p.getY() > 2000) {
 			resetLevel();
 		}
 
 
-
-		if((arg0.getKeyCode() == 32 && closePC(p, c1.get(0)) )|| (pickUp && arg0.getKeyCode() == 32)) {
-			pickUp = !pickUp;
+		for(Cube c1: c1List) {
+			if((arg0.getKeyCode() == 32 && closePC(p, c1) )|| (pickUp && arg0.getKeyCode() == 32)) {
+				pickUp = !pickUp;
+			}
 		}
+
 
 	}
 	private boolean closePC(Player p, Cube c1) {
@@ -996,14 +1091,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		if((arg0.getKeyCode() == 83 || arg0.getKeyCode() == 87)&&p.getGround()) {
 			p.setVY(0);
-		}
+		}		
+		if(arg0.getKeyCode() == 82) resetLevel();
+		System.out.println(arg0.getKeyCode());
 
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 

@@ -23,6 +23,8 @@ public class Player {
 	private boolean left;
 	private boolean ground;
 	private boolean dead;
+	private int startX;
+	private int startY;
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -81,6 +83,23 @@ public class Player {
 		return left;
 	}
 
+	public int getStartX() {
+		return startX;
+	}
+	public int getStartY() {
+		return startY;
+	}
+	public void setStartX(int startX) {
+		this.startX = startX;
+	}
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
+	public void reset() {
+		x = startX;
+		y = startY;
+	}
+
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
@@ -129,3 +148,5 @@ public class Player {
 		return tempImage;
 	}
 }
+
+

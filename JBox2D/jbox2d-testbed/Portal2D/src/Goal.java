@@ -20,7 +20,7 @@ public class Goal {
 		this.y = y;
 		this.open = open;
 		if(open)
-		img = getImage("Door.png"); 
+			img = getImage("Door.png"); 
 		else 
 			img=getImage("closedDoor.png");
 		tx = AffineTransform.getTranslateInstance(x, y );
@@ -44,6 +44,10 @@ public class Goal {
 	}
 	public void setOpen(boolean open) {
 		this.open = open;
+		if(open)
+			img = getImage("Door.png"); 
+		else 
+			img=getImage("closedDoor.png");
 	}
 
 	public void paint(Graphics g) {
