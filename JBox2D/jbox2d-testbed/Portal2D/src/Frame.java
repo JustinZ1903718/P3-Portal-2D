@@ -25,8 +25,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int p1y=450;
 	private int p2x=1200;
 	private int p2y=450;
-	private int startX = 200;
-	private int startY = 450;
 
 
 	private int prevX;
@@ -53,19 +51,24 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int wallP1 = -1;
 	private int wallP2 = -1;
 	private int level = 0;
-	
+
+	private boolean levelSelect=false;
+	private boolean instructions=false;
+	private int maxLevel=4;
+
+
 	Crosshair c = new Crosshair();
 	Goal go = new Goal(1750, 110, false);
 	ArrayList<Button> buttons = new ArrayList<>();{
 		buttons.add(new Button(450, 1380, 3));
 	}
 	ArrayList<Enemy> enemies = new ArrayList<>();{}
-	
+
 	ArrayList<Wall> walls=new ArrayList<>(); {
 		walls.add(new Wall(0, 0, 2000, 10, false, 0, false));
 		walls.add(new Wall(0, 0, 10, 2000, false, 1, false));
 		walls.add(new Wall(1480, 0, 1500, 1000, false, 2, false));
-		
+
 		walls.add(new Wall(200, 0, 250, 2000, true, 3, false));
 		walls.add(new Wall(1250, 0, 1300, 1000, true, 4, false));
 		walls.add(new Wall(0, 500, 2000, 600, true, 4, false));
@@ -78,9 +81,43 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		if(levelSelect) {
+			if(instructions) {
+				g.setColor(Color.white);
+				g.drawRect(0, 0, 1500, 1000);
+				g.setColor(Color.black);
+				Font font = new Font("Joe", Font.PLAIN, 30);
+				g.setFont(font);
+				g.drawString("WASD to move (A left, D right, W jump)", 100, 100);
+				g.drawString("Left click to shoot blue portal, right click to shoot orange portal", 100, 150);
+				g.drawString("You may only shoot portals on the lightly colored walls", 100, 200);
+				g.drawString("If you or the cube enters a portal, it exits through the other portal", 100, 250);
+				g.drawString("Enter a horizontal portal by jumping into it", 100, 300);
+				g.drawString("Press space to pick up the cube (and drop the cube when picking up the cube)", 100, 350);
+				g.drawString("Enemies fire deadly lasers: block the lasers and kill the enemies with a cube", 100, 400);
+				g.drawString("Pressing the button deactivates the pink wall and allows you to enter the goal", 100, 450);
+				g.drawString("Enter the goal with the button pressed to beat the level!", 100, 500);
+				g.drawString("Press r to reset the level", 100, 550);
+				font = new Font("Joe", Font.PLAIN, 80);
+				g.setFont(font);
+				g.drawString("press m to return to the main menu", 100, 700);
+				return;
+			}
+
+			g.setColor(Color.white);
+			g.drawRect(0, 0, 1500, 1000);
+			g.setColor(Color.black);
+			Font font = new Font("Joe", Font.PLAIN, 40);
+			g.setFont(font);
+			g.drawString("Choose a Level Between 1 and "+maxLevel, 100, 100);
+			g.drawString("Enter the number of the Level you want to play", 100, 160);
+			g.drawString("For instructions how to play the game, press 0", 100, 220);
+
+			return;
+		}
 		go.paint(g);
 		for(Cube c1: c1List) {
-			
+
 			for(Button b: buttons) {
 				b.paint(g);
 				if(b.getPressed()) {
@@ -92,7 +129,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						walls.get(b.getWallIndex()).setExist(true);	
 						go.setOpen(false);
 					}
-					
+
 				}
 				if(closePB(p, b) || closeBC(b, c1)) {
 					b.setPressed(true);
@@ -103,34 +140,35 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 			}
 			if(level==0) {
-				Font font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 160);
+				Font font = new Font("Joe", Font.PLAIN, 160);
 				g.setColor(Color.black);
 				g.setFont(font);
 				g.drawString("Portal-2D ED", 250, 240);
-				font = new Font("Joeaaaaaaaaaaaaa", Font.PLAIN, 40);
+				font = new Font("Joe", Font.PLAIN, 40);
 				g.setFont(font);
 				g.drawString("Created By: Adam Levine, Justin Zhang, Pranav Eluri", 270, 750);
 				g.drawString("New Game", 270, 450);
 				g.drawString("Level Select/Instructions", 800, 450);
-				
+
 				if(p.getX()<300) {
-					level=4;
-					groundY=170;
-					p.setY(groundY);
-					p.reset();
+					level++;
 					updateLevel(walls, enemies, c1List, go, p, buttons, level);
+				}
+				if(p.getX()>1160) {
+					levelSelect=true;
+
 				}
 			}
 			if(go.getOpen() && closePG(p, go)) {
 				level++;
 				updateLevel(walls, enemies, c1List, go, p, buttons, level);
-				
+
 			}
-			
+
 			for(Wall w: walls) {
 				w.paint(g);
 			}
-			
+
 			for(Laser i: lasers) {
 				if(!i.getPaint()) {
 					lasers.remove(i);
@@ -198,9 +236,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 					p.setVX(5);
 				}
 			}
-			
+
 			p.paint(g);
-			
+
 			if(pickUp) {
 				c1.setVy(p.getVY());
 				c1.setVx(p.getVX());
@@ -237,11 +275,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if(justTele) {
 				justTele=false;
 			}
-			System.out.println(p.getY());
 			prevprevX = prevX;
 			prevprevY = prevY;
 			prevX=p.getX();
 			prevY=p.getY();
+			System.out.println(level);
 		}
 	}
 	public void updateLevel(ArrayList<Wall> w, ArrayList<Enemy> e, ArrayList<Cube> c, Goal go, Player p, ArrayList<Button> b, int level) {
@@ -274,7 +312,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			walls.add(new Wall(800, 200, 820, 500, false, 7, true));
 			walls.add(new Wall(0, 300, 220, 400, true, 8, false));
 		}
-		
+
 		if(level==3) {
 			walls.add(new Wall(0, 900, 400, 1000, true, 3, false));
 			walls.add(new Wall(400, 750, 1000, 850, true, 4, false));
@@ -286,21 +324,21 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			walls.add(new Wall(0, 300, 100, 350, false, 10, false));
 			walls.add(new Wall(450, 350, 1200, 400, true, 11, false));
 		}
-		
+
 		if(level == 4) {
 			walls.add(new Wall(0, 900, 350, 1000, true, 3, false));
 			walls.add(new Wall(500, 700, 800, 800, true, 4, false));
 			walls.add(new Wall(1000, 700, 1500, 800, true, 5, false));
 			walls.add(new Wall(650, 520, 1500, 570, false, 6, false));
 			walls.add(new Wall(650, 570, 1500, 620, true, 7, false));
-			
+
 			walls.add(new Wall(750, 450, 850, 490, false, 8, false));
 			walls.add(new Wall(850, 390, 950, 430, false, 9, false));
 			walls.add(new Wall(950, 320, 1050, 360, false, 10, true));
 			walls.add(new Wall(1100, 320, 1300, 360, false, 11, false));
 			walls.add(new Wall(1300, 320, 1500, 360, true, 12, false));
 			walls.add(new Wall(1300, 300, 1330, 320, false, 12, false));
-			
+
 		}
 
 	}
@@ -324,7 +362,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			enemies.add(new Enemy(750, 450, 500));
 
 		}
-		
+
 		if(level==3) {
 			enemies.add(new Enemy(380, 520, 500));
 			enemies.add(new Enemy(330, 520, 500));
@@ -341,7 +379,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(level == 2) {
 			c.set(0, new Cube(150, 420));
 		}
-		
+
 		if(level==3) {
 			c.set(0, new Cube(150, 420));
 		}
@@ -358,7 +396,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			go.setX(1000);
 			go.setY(400);
 		}
-		
+
 		if(level==3) {
 			go.setX(1000);
 			go.setY(250);
@@ -370,6 +408,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public void updatePlayer(Player p, int level) {
 		if(level==1) {
+			groundY=170;
+			p.setY(groundY);
+			p.reset();
 			p.setStartY(69);
 			p.setStartX(69);
 			p.setY(p.getStartY());
@@ -796,9 +837,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 
 	public void shootPortal(Player p, int x, int y, boolean orange) {
-		Shot s1 = new Shot(p.getX()+20,p.getY()+25, x, y, 1500, orange);
-		if(s.size() == 0) s.add(0, s1);
-		else s.set(0, s1);
+		if(level!=0) {
+			Shot s1 = new Shot(p.getX()+20,p.getY()+25, x, y, 1500, orange);
+			if(s.size() == 0) s.add(0, s1);
+			else s.set(0, s1);
+		}
 	}
 	public void resetLevel() {
 		p.setX(p.getStartX());
@@ -1125,7 +1168,23 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				releaseInAir=true;
 			}
 		}
+		if(levelSelect) {
+			if(arg0.getKeyCode()==48) {
+				instructions=true;
+			}
+			if(arg0.getKeyCode()>48&&arg0.getKeyCode()<=48+maxLevel) {
+				level=arg0.getKeyCode()-48;
+				updateLevel(walls, enemies, c1List, go, p, buttons, level);
+				levelSelect=false;
 
+			}
+			if(instructions&&arg0.getKeyCode()==77) {
+				levelSelect=false;
+				instructions=false;
+				level=0;
+				p.setX(700);
+			}
+		}
 		if((arg0.getKeyCode() == 83 || arg0.getKeyCode() == 87)&&p.getGround()) {
 			p.setVY(0);
 		}		
