@@ -55,6 +55,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean levelSelect=false;
 	private boolean instructions=false;
 	private int maxLevel=4;
+	private LevelManager levelManager  = new LevelManager();
 
 
 	Crosshair c = new Crosshair();
@@ -283,12 +284,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 	}
 	public void updateLevel(ArrayList<Wall> w, ArrayList<Enemy> e, ArrayList<Cube> c, Goal go, Player p, ArrayList<Button> b, int level) {
-		updateCube(c1List, level);
-		updateButton(buttons, level);
-		updateEnemy(enemies, level);
-		updateGoal(go, level);
-		updateWalls(walls, level);
-		updatePlayer(p, level);
+		// uncomment these five lines and the comment the next two lines to use old level design.
+		//updateButton(buttons, level);
+		//updateEnemy(enemies, level);
+		//updateGoal(go, level);
+		//updateWalls(walls, level);
+		//updatePlayer(p, level);
+		
+		// next two lines
+		levelManager.updateLevel(w, e, c, go, p, b, level);
+		if(level == 1) {groundY=170;}
+
 		p1x = 9001;
 		p1y = 9001;
 		p2x = 9001;
@@ -465,6 +471,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			c1.setY(w.getBy());
 		}
 	}
+	
 	public void teleportCube(Portal p1, Portal p2, Cube c1) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
 			if((p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()-10> p1x))|| (p1Direction == 2 && c1.getX()-40<p1x&&c1.getVx()<0 &&c1.getX()+10> p1x)) { //orange portal on right wall || portal on left wall

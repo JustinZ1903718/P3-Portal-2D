@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="JBox2D/jbox2d-library/src/main/java"/>
+	<classpathentry kind="src" path="JBox2D/jbox2d-library/src/test/java"/>
+	<classpathentry kind="src" path="JBox2D/jbox2d-serialization/src/generated"/>
+	<classpathentry kind="src" path="JBox2D/jbox2d-serialization/src/main/java"/>
+	<classpathentry kind="src" path="JBox2D/jbox2d-testbed"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-library/target/jbox2d-library-2.1.2.3-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-library/target/jbox2d-library-2.1.2.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-library/target/jbox2d-library-2.1.2.3-sources.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-library/target/jbox2d-library-2.1.2.3.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-serialization/target/jbox2d-serialization-1.0.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-serialization/target/jbox2d-serialization-1.0.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-serialization/target/jbox2d-serialization-1.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="JBox2D/jbox2d-serialization/target/jbox2d-serialization-1.0.1.jar"/>
+	<classpathentry kind="output" path="JBox2D/jbox2d-library/target/classes"/>
+</classpath>
