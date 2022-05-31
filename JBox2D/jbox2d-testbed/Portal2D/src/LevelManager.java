@@ -22,6 +22,9 @@ public class LevelManager {
 			
 			case 4: currentLevel = new Level4();
 			break;
+			
+			case 4: currentLevel = new Level5();
+			break;
 		}
 		
 		currentLevel.updateCube(cubes);

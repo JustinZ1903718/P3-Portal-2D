@@ -82,6 +82,16 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		if(level==maxLevel+1) {
+			g.setColor(Color.white);
+			g.drawRect(0, 0, 1500, 1000);
+			g.setColor(Color.black);
+			Font font = new Font("Joe", Font.PLAIN, 100);
+			g.setFont(font);
+			g.drawString("You Win! No skill issue:)", 100, 100);
+			
+		}
+
 		if(levelSelect) {
 			if(instructions) {
 				g.setColor(Color.white);
@@ -95,7 +105,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				g.drawString("If you or the cube enters a portal, it exits through the other portal", 100, 250);
 				g.drawString("Enter a horizontal portal by jumping into it", 100, 300);
 				g.drawString("Press space to pick up the cube (and drop the cube when picking up the cube)", 100, 350);
-				g.drawString("Enemies fire deadly lasers: block the lasers and kill the enemies with a cube", 100, 400);
+				g.drawString("Enemies fire deadly lasers: block the lasers with a cube and kill the enemies with a cube", 100, 400);
 				g.drawString("Pressing the button deactivates the pink wall and allows you to enter the goal", 100, 450);
 				g.drawString("Enter the goal with the button pressed to beat the level!", 100, 500);
 				g.drawString("Press r to reset the level", 100, 550);
@@ -284,17 +294,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 	}
 	public void updateLevel(ArrayList<Wall> w, ArrayList<Enemy> e, ArrayList<Cube> c, Goal go, Player p, ArrayList<Button> b, int level) {
-		// uncomment these five lines and the comment the next two lines to use old level design.
-		//updateButton(buttons, level);
-		//updateEnemy(enemies, level);
-		//updateGoal(go, level);
-		//updateWalls(walls, level);
-		//updatePlayer(p, level);
 		
-		// next two lines
+		updateButton(buttons, level);
+		updateEnemy(enemies, level);
+		updateGoal(go, level);
+		updateWalls(walls, level);
+		updatePlayer(p, level);
+		updateCube(c, level);
+		
+		/* next two lines
 		levelManager.updateLevel(w, e, c, go, p, b, level);
 		if(level == 1) {groundY=170;}
+		*/
 
+		
 		p1x = 9001;
 		p1y = 9001;
 		p2x = 9001;
@@ -327,7 +340,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			walls.add(new Wall(420, 275, 450, 535, false, 7, true));
 			walls.add(new Wall(0, 100, 450, 250, true, 8, false));
 			walls.add(new Wall(450, 400, 1200, 450, false, 9, false));
-			walls.add(new Wall(0, 300, 100, 350, false, 10, false));
+			walls.add(new Wall(0, 300, 120, 400, false, 10, false));
 			walls.add(new Wall(450, 350, 1200, 400, true, 11, false));
 		}
 
@@ -346,6 +359,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			walls.add(new Wall(1300, 300, 1330, 320, false, 12, false));
 
 		}
+		
+		if(level==5) {
+			walls.add(new Wall(0, 800, 2000, 900, true, 4, false));
+		}
+
 
 	}
 	public void updateEnemy(ArrayList<Enemy> e, int level) {
@@ -377,6 +395,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			enemies.add(new Enemy(1200, 650, 500));
 			enemies.add(new Enemy(1250, 650, 500));
 		}
+		if(level==5) {
+			//ur mom
+		}
+
 	}
 	public void updateCube(ArrayList<Cube> c, int level) {
 		if(level==1) {
@@ -392,6 +414,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(level==4) {
 			c.set(0, new Cube(675, 480));
 		}
+		if(level==5) {
+			c.set(0, new Cube(69675, 480));
+		}
+
 	}
 	public void updateGoal(Goal go, int level) {
 		if(level==1) {
@@ -411,6 +437,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			go.setX(1400);
 			go.setY(180);
 		}
+		if(level==5) {
+			go.setY(18000);
+		}
+
 	}
 	public void updatePlayer(Player p, int level) {
 		if(level==1) {
@@ -437,6 +467,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			p.setY(p.getStartY());
 			p.setX(p.getStartX());
 		}
+		if(level==5) {
+			p.setStartY(700);
+			p.setStartX(750);
+			p.setY(p.getStartY());
+			p.setX(p.getStartX());
+		}
+
 	}
 	public void updateButton(ArrayList<Button> b, int level) {
 		for(int i = b.size()-1;i>=0;i--) {
