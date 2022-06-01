@@ -13,8 +13,10 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Crosshair {
+	//the crosshair is the aiming thing: shows where on the screen you are shooting at
 	private Image img; 	
 	private AffineTransform tx;
+	//location and color
 	private int x;
 	private int y;
 	private boolean blue;
@@ -26,6 +28,7 @@ public class Crosshair {
 		init(x, y); 				//initialize the location of the image
 									//use your variables
 	}
+	//getters and setters
 	public void setX(int x) {
 		this.x = x-19;
 	}

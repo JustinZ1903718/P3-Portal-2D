@@ -11,13 +11,16 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Cube {
+	//The cube presses buttons, kills enemies, and blocks lasers
 	private Image img; 	
 	private AffineTransform tx;
 	private int x;
 	private int y;
 	private int vx;
 	private int vy;
+	//is affected by gravity
 	private int gravity=1;
+	//starting location at the start of a level
 	private int startX;
 	private int startY;
 	public Cube(int x, int y) {
@@ -31,6 +34,7 @@ public class Cube {
 		init(x, y); 				//initialize the location of the image
 									//use your variables
 	}
+	//getters and setters
 	public int getX() {
 		return x;
 	}

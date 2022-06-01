@@ -10,7 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Wall{
-
+	//the wall class: the wall has location, and instance variables based on whether you can shoot a portal or not on it, or if it is connected to the button
 	//add location attributes
 	private int topX;
 	private int topY;

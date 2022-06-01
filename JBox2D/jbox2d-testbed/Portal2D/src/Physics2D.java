@@ -1,6 +1,6 @@
 package Portal2D.src;
 
-
+//useless class, pls ignore
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;

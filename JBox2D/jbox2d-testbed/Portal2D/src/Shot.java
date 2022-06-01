@@ -14,7 +14,7 @@ import java.net.URL;
 public class Shot{
 	
 	//add location attributes
-	
+	//the laser that the player shoots to spawn a portal: very similar to the laser class, just different color and speed
 	private int x;
 	private int y;
 	private double curx;

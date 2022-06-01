@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Portal{
-	
+	//portal class: portal can be orange or blue, horizontal or vertical
 	//add location attributes
 	private Image img; 	
 	private AffineTransform tx;
@@ -26,7 +26,7 @@ public class Portal{
 		init(x, y); 				//initialize the location of the image
 									//use your variables
 	}
-	
+	//getters and setters
 	public int getX() {
 		return this.x;
 	}

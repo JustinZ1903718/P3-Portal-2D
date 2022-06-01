@@ -13,12 +13,14 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Player {
+	//player can move, jump, pick up cube
 	private Image img; 	
 	private AffineTransform tx;
 	private int x;
 	private int y;
 	private int vx;
 	private int vy;
+	//instance variables
 	private double gravity=1;
 	private boolean left;
 	private boolean ground;
@@ -35,6 +37,7 @@ public class Player {
 		init(x, y); 				//initialize the location of the image
 									//use your variables
 	}
+	//getters and setters
 	public int getX() {
 		return x;
 	}
@@ -117,7 +120,7 @@ public class Player {
 
 	}
 	
-	private void update() {
+	private void update() {//incorporates gravity and a maximal speed
 	
 		x += vx;
 		if(!ground) {

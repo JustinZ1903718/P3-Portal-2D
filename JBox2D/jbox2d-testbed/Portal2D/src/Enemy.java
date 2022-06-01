@@ -13,14 +13,17 @@ import java.net.URL;
 public class Enemy {
 
 	//add location attributes
+	//enemy shoots lasers at the player
 	private Image img; 	
 	private AffineTransform tx;
 	private int x;
 	private int y;
+	//parameters are start location, length, and angle
 	private double angle;
 	private double inc=0.03;
 	private int length;
 	private boolean dead;
+	//how often the enemy shoots lasers
 	private int cooldown;
 
 	public Enemy(int x, int y, int length) {
@@ -34,7 +37,7 @@ public class Enemy {
 		init(x, y); 				//initialize the location of the image
 		//use your variables
 	}
-
+	//getters and setters
 	public int getX() {
 		return this.x;
 	}

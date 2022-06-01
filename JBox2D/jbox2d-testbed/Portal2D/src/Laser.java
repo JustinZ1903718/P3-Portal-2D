@@ -14,9 +14,10 @@ import java.net.URL;
 public class Laser{
 	
 	//add location attributes
-	
+	//the laser that the enemy shoots
 	private int x;
 	private int y;
+	//starting location, current location, ending location
 	private double curx;
 	private double cury;
 	private int targetx;
@@ -65,6 +66,7 @@ public class Laser{
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
+		//very annoying math stuff
 		if(dist(x, y, (int) curx, (int) cury)<range) {
 			g2.setColor(Color.red);
 			g2.setStroke(new BasicStroke(4));

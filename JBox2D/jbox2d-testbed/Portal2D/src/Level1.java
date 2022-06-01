@@ -1,7 +1,7 @@
 package Portal2D.src;
 
 import java.util.ArrayList;
-
+//level classes store the information of the classes for the level
 public class Level1 extends Level{
 
 	public void updateCube(ArrayList<Cube> cubes) 

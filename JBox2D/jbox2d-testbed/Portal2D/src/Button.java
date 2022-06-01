@@ -13,10 +13,12 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Button {
+	//button activates the goal and removes a wall
 	private Image img; 	
 	private AffineTransform tx;
 	private int x;
 	private int y;
+	//button is pressed, opens goal and removes wall
 	private boolean pressed;
 	private int wallIndex;
 	public Button(int x, int y, int w) {
@@ -29,6 +31,7 @@ public class Button {
 		init(x, y); 				//initialize the location of the image
 									//use your variables
 	}
+	//getters and setters
 	public int getX() {
 		return x;
 	}

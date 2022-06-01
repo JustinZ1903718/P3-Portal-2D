@@ -1,5 +1,19 @@
 package Portal2D.src;
 //fo
+/* great game
+ * a bit confusing and the laser is kinda annoying but cool concept
+ * material gworl i want chanel nine boots
+ * so slay
+ * good animation
+ * so cool but intrsutctions r confusing
+ * cool
+ * VERY NICE
+ * cool
+ * hard game to understand how to play
+ * COOL
+ * 
+ * 
+ */
 import java.awt.Color;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
@@ -19,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
-
+    //initializing variables
 	Player p=new Player(700, 450);
 	private int p1x=250;
 	private int p1y=450;
@@ -57,7 +71,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private int maxLevel=4;
 	private LevelManager levelManager  = new LevelManager();
 
-
+	//stuff for the title screen
 	Crosshair c = new Crosshair();
 	Goal go = new Goal(1750, 110, false);
 	ArrayList<Button> buttons = new ArrayList<>();{
@@ -82,6 +96,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		
 		if(level==maxLevel+1) {
 			g.setColor(Color.white);
 			g.drawRect(0, 0, 1500, 1000);
@@ -91,7 +106,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			g.drawString("You Win! No skill issue:)", 100, 100);
 			
 		}
-
+		
 		if(levelSelect) {
 			if(instructions) {
 				g.setColor(Color.white);
@@ -295,17 +310,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	public void updateLevel(ArrayList<Wall> w, ArrayList<Enemy> e, ArrayList<Cube> c, Goal go, Player p, ArrayList<Button> b, int level) {
 		
-		updateButton(buttons, level);
-		updateEnemy(enemies, level);
-		updateGoal(go, level);
-		updateWalls(walls, level);
-		updatePlayer(p, level);
-		updateCube(c, level);
 		
-		/* next two lines
 		levelManager.updateLevel(w, e, c, go, p, b, level);
 		if(level == 1) {groundY=170;}
-		*/
 
 		
 		p1x = 9001;
@@ -313,186 +320,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		p2x = 9001;
 		p2y = 9001;
 	}
-	public void updateWalls(ArrayList<Wall> w, int level) {
-		for(int i = w.size()-1;i>2;i--) {
-			w.remove(i);
-		}
-		if(level==1) {
-			walls.add(new Wall(200, 400, 1000, 500, true, 3, false));
-			walls.add(new Wall(0, 200, 250, 400, true, 4, false));
-			walls.add(new Wall(500, 200, 1000, 325, true, 5, false));
-			walls.add(new Wall(600, 0, 650, 400, false, 6, true));
-		}
-		if(level == 2) {
-			walls.add(new Wall(0, 900, 200, 1000, true, 3, false));
-			walls.add(new Wall(200, 750, 400, 850, true, 4, false));
-			walls.add(new Wall(100, 540, 200, 580, false, 5, false));
-			walls.add(new Wall(400, 500, 1500, 550, true, 6, false));
-			walls.add(new Wall(800, 200, 820, 500, false, 7, true));
-			walls.add(new Wall(0, 300, 220, 400, true, 8, false));
-		}
-
-		if(level==3) {
-			walls.add(new Wall(0, 900, 400, 1000, true, 3, false));
-			walls.add(new Wall(400, 750, 1000, 850, true, 4, false));
-			walls.add(new Wall(800, 600, 950, 650, true, 5, false));
-			walls.add(new Wall(0, 570, 450, 620, true, 6, false));
-			walls.add(new Wall(420, 275, 450, 535, false, 7, true));
-			walls.add(new Wall(0, 100, 450, 250, true, 8, false));
-			walls.add(new Wall(450, 400, 1200, 450, false, 9, false));
-			walls.add(new Wall(0, 300, 120, 400, false, 10, false));
-			walls.add(new Wall(450, 350, 1200, 400, true, 11, false));
-		}
-
-		if(level == 4) {
-			walls.add(new Wall(0, 900, 350, 1000, true, 3, false));
-			walls.add(new Wall(500, 700, 800, 800, true, 4, false));
-			walls.add(new Wall(1000, 700, 1500, 800, true, 5, false));
-			walls.add(new Wall(650, 520, 1500, 570, false, 6, false));
-			walls.add(new Wall(650, 570, 1500, 620, true, 7, false));
-
-			walls.add(new Wall(750, 450, 850, 490, false, 8, false));
-			walls.add(new Wall(850, 390, 950, 430, false, 9, false));
-			walls.add(new Wall(950, 320, 1050, 360, false, 10, true));
-			walls.add(new Wall(1100, 320, 1300, 360, false, 11, false));
-			walls.add(new Wall(1300, 320, 1500, 360, true, 12, false));
-			walls.add(new Wall(1300, 300, 1330, 320, false, 12, false));
-
-		}
-		
-		if(level==5) {
-			walls.add(new Wall(0, 800, 2000, 900, true, 4, false));
-		}
-
-
-	}
-	public void updateEnemy(ArrayList<Enemy> e, int level) {
-		for(int i = e.size()-1;i>=0;i--) {
-			e.remove(i);
-		}
-		if(level==1) {
-			enemies.add(new Enemy(700, 150, 500));
-			enemies.add(new Enemy(900, 150, 500));
-			enemies.add(new Enemy(500, 350, 500));
-		}
-		if(level == 2) {
-			enemies.add(new Enemy(400, 450, 500));
-			enemies.add(new Enemy(450, 450, 500));
-			enemies.add(new Enemy(500, 450, 500));
-			enemies.add(new Enemy(550, 450, 500));
-			enemies.add(new Enemy(600, 450, 500));
-			enemies.add(new Enemy(650, 450, 500));
-			enemies.add(new Enemy(700, 450, 500));
-			enemies.add(new Enemy(750, 450, 500));
-
-		}
-
-		if(level==3) {
-			enemies.add(new Enemy(380, 520, 500));
-			enemies.add(new Enemy(330, 520, 500));
-		}
-		if(level==4) {
-			enemies.add(new Enemy(1200, 650, 500));
-			enemies.add(new Enemy(1250, 650, 500));
-		}
-		if(level==5) {
-			//ur mom
-		}
-
-	}
-	public void updateCube(ArrayList<Cube> c, int level) {
-		if(level==1) {
-			c.set(0, new Cube(350, 80));
-		}
-		if(level == 2) {
-			c.set(0, new Cube(150, 420));
-		}
-
-		if(level==3) {
-			c.set(0, new Cube(150, 420));
-		}
-		if(level==4) {
-			c.set(0, new Cube(675, 480));
-		}
-		if(level==5) {
-			c.set(0, new Cube(69675, 480));
-		}
-
-	}
-	public void updateGoal(Goal go, int level) {
-		if(level==1) {
-			go.setX(750);
-			go.setY(110);
-		}
-		if(level == 2) {
-			go.setX(1000);
-			go.setY(400);
-		}
-
-		if(level==3) {
-			go.setX(1000);
-			go.setY(250);
-		}
-		if(level==4) {
-			go.setX(1400);
-			go.setY(180);
-		}
-		if(level==5) {
-			go.setY(18000);
-		}
-
-	}
-	public void updatePlayer(Player p, int level) {
-		if(level==1) {
-			groundY=170;
-			p.setY(groundY);
-			p.reset();
-			p.setStartY(69);
-			p.setStartX(69);
-			p.setY(p.getStartY());
-			p.setX(p.getStartX());
-		}
-		if(level == 2) {
-			p.setStartY(869);
-			p.setY(p.getStartY());
-			p.setX(p.getStartX());
-		}
-		if(level == 3) {
-			p.setStartY(869);
-			p.setY(p.getStartY());
-			p.setX(p.getStartX());
-		}
-		if(level==4) {
-			p.setStartY(869);
-			p.setY(p.getStartY());
-			p.setX(p.getStartX());
-		}
-		if(level==5) {
-			p.setStartY(700);
-			p.setStartX(750);
-			p.setY(p.getStartY());
-			p.setX(p.getStartX());
-		}
-
-	}
-	public void updateButton(ArrayList<Button> b, int level) {
-		for(int i = b.size()-1;i>=0;i--) {
-			b.remove(i);
-		}
-		if(level==1) {
-			buttons.add(new Button(450, 380, 6));
-		}
-		if(level == 2) {
-			buttons.add(new Button(40, 280, 7));
-		}
-		if(level==3) {
-			buttons.add(new Button(40, 280, 7));
-		}
-		if(level==4) {
-			buttons.add(new Button(1350, 680, 10));
-		}
-	}
-	public void updateCubeLoc(Wall w, Cube c1) {
+	
+	public void updateCubeLoc(Wall w, Cube c1) {//cube collision with walls
 		if(checkLeft(c1.getX(), c1.getY(), c1.getX()+20, c1.getY()+20, w)) {//wall on the left
 			c1.setX(w.getBx());
 		}
@@ -508,7 +337,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			c1.setY(w.getBy());
 		}
 	}
-	
+
 	public void teleportCube(Portal p1, Portal p2, Cube c1) {
 		if(!p1.getHorizontal()) { //UNCOMBINE CEILING AND FLORR PORTAL IDOT
 			if((p1Direction == 3 && c1.getX()+25>p1x&&c1.getVx()>0 && !(c1.getX()-10> p1x))|| (p1Direction == 2 && c1.getX()-40<p1x&&c1.getVx()<0 &&c1.getX()+10> p1x)) { //orange portal on right wall || portal on left wall
@@ -764,7 +593,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 	}
-
 
 	public void updateCollision(int TopLeftX, int TopLeftY, int BotRightX, int BotRightY, Wall w) {
 

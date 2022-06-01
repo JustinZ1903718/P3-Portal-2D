@@ -3,7 +3,7 @@ package Portal2D.src;
 import java.util.ArrayList;
 
 public class LevelManager {
-
+//levelManager is a class that updates the level based on the current level
 	private Level currentLevel = new Level1();
 	public void updateLevel(ArrayList<Wall> walls, ArrayList<Enemy> enemies, 
 			ArrayList<Cube> cubes, Goal goal, Player player, ArrayList<Button> buttons,
@@ -23,7 +23,7 @@ public class LevelManager {
 			case 4: currentLevel = new Level4();
 			break;
 			
-			case 4: currentLevel = new Level5();
+			case 5: currentLevel = new Level5();
 			break;
 		}
 		

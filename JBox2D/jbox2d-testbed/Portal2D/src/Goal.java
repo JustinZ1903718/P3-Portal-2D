@@ -10,11 +10,13 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 public class Goal {
+	//the finish line of the level. Only activated by pressing the button
 	private int x;
 	private int y;
 	private boolean open;
 	private Image img; 	
 	private AffineTransform tx;
+	//getters and setters
 	public Goal(int x, int y, boolean open) {
 		this.x = x;
 		this.y = y;
